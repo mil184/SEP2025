@@ -42,4 +42,42 @@ export class AuthService {
       }
     });
   }
+
+  getUserId1(): string {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return '';
+
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.nameid || payload.sub || payload.id;
+  }
+
+  getUserId(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    const payload = this.decodeJwtPayload(token);
+    if (!payload) return null;
+
+    return payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ?? null;
+  }
+
+  private decodeJwtPayload(token: string): any | null {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const padded = base64 + '='.repeat((4 - (base64.length % 4)) % 4);
+      return JSON.parse(atob(padded));
+    } catch {
+      return null;
+    }
+  }
+
+  private getToken(): string | null {
+    if (!this.isBrowser()) return null;
+    return localStorage.getItem('accessToken');
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
 }

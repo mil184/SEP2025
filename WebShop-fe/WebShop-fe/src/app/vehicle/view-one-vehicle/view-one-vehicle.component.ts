@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Vehicle } from '../../model/vehicle.model';
 import { ActivatedRoute } from '@angular/router';
 import { VehicleService } from '../vehicle.service';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { AuthService } from '../../auth/auth.service';
+import { ReservationService } from '../reservation.service';
+import { Reservation } from '../../model/reservation.model';
 
 @Component({
   selector: 'app-view-one-vehicle',
@@ -9,22 +13,32 @@ import { VehicleService } from '../vehicle.service';
   styleUrl: './view-one-vehicle.component.scss'
 })
 export class ViewOneVehicleComponent implements OnInit {
-vehicle: Vehicle | null = null;
+  vehicle: Vehicle | null = null;
   isLoading = false;
   error: string | null = null;
+  isLoggedIn = false;
+
+  reservationForm = new FormGroup({
+  startDate: new FormControl('', Validators.required),
+  endDate: new FormControl('', Validators.required),
+  });
 
   constructor(
     private route: ActivatedRoute,
-    private vehicleService: VehicleService
+    private vehicleService: VehicleService,
+    private authService: AuthService,
+    private reservationService: ReservationService
+
   ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-
     if (!id) {
       this.error = 'Missing vehicle id in URL.';
       return;
     }
+
+    this.isLoggedIn = this.authService.isLoggedIn();
 
     this.fetchVehicle(id);
   }
@@ -40,7 +54,6 @@ vehicle: Vehicle | null = null;
         this.isLoading = false;
       },
       error: (err) => {
-        // handle backend messages nicely if available
         const msg =
           err?.error?.message ||
           err?.message ||
@@ -49,6 +62,38 @@ vehicle: Vehicle | null = null;
         this.error = msg;
         this.isLoading = false;
       }
+    });
+  }
+
+  public reserve(): void {
+    console.log(this.reservationForm);
+    if (this.reservationForm.invalid) return;
+
+    const startDate = this.reservationForm.value.startDate!;
+    const endDate = this.reservationForm.value.endDate!;
+
+    if (endDate <= startDate) {
+      return;
+    }
+
+    const userId = this.authService.getUserId();
+    if (userId == null){
+      return;
+    }
+
+    const reservation: Reservation = {
+      userId: userId,
+      vehicleId: this.vehicle!.id,
+      startDate: startDate,
+      endDate: endDate
+    };
+    
+    this.reservationService.create(reservation).subscribe({
+      next: (created) => {
+        console.log('Reservation created:', created);
+        this.reservationForm.reset();
+      },
+      error: (err) => console.error(err),
     });
   }
 }

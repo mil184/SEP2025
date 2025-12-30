@@ -1,19 +1,31 @@
 <mat-card appearance="outlined" class="page-card">
 
   <!-- Header -->
-  <mat-card-header>
-    <mat-card-title>
-      Vehicle details
-    </mat-card-title>
-    <mat-card-subtitle *ngIf="vehicle">
-      {{ vehicle.brand }} {{ vehicle.model }}
-    </mat-card-subtitle>
+  <mat-card-header class="header">
+    <mat-icon class="header-icon" aria-hidden="true">directions_car</mat-icon>
+
+    <div class="header-text">
+      <mat-card-title>Vehicle details</mat-card-title>
+      <mat-card-subtitle *ngIf="vehicle">
+        {{ vehicle.brand }} {{ vehicle.model }}
+      </mat-card-subtitle>
+    </div>
+
+    <span class="spacer"></span>
+
+    <a mat-stroked-button color="primary" [routerLink]="['/vehicles']">
+      <mat-icon aria-hidden="true">arrow_back</mat-icon>
+      Back
+    </a>
   </mat-card-header>
+
+  <mat-divider></mat-divider>
 
   <mat-card-content>
 
     <!-- Loading -->
-    <div *ngIf="isLoading" class="state-row">
+    <div *ngIf="isLoading" class="state-row loading">
+      <mat-progress-spinner diameter="28" mode="indeterminate"></mat-progress-spinner>
       <span>Loading vehicle...</span>
     </div>
 
@@ -27,40 +39,108 @@
 
     <!-- Vehicle -->
     <ng-container *ngIf="!isLoading && !error && vehicle; else notFound">
-      <mat-list>
-        <mat-list-item>
-          <mat-icon matListItemIcon aria-hidden="true">sell</mat-icon>
-          <div matListItemTitle>Brand</div>
-          <div matListItemLine>{{ vehicle.brand }}</div>
-        </mat-list-item>
+      <div class="details-grid">
 
-        <mat-list-item>
-          <mat-icon matListItemIcon aria-hidden="true">directions_car</mat-icon>
-          <div matListItemTitle>Model</div>
-          <div matListItemLine>{{ vehicle.model }}</div>
-        </mat-list-item>
+        <div class="info-tile">
+          <mat-icon aria-hidden="true">sell</mat-icon>
+          <div>
+            <div class="label">Brand</div>
+            <div class="value">{{ vehicle.brand }}</div>
+          </div>
+        </div>
 
-        <mat-list-item>
-          <mat-icon matListItemIcon aria-hidden="true">year</mat-icon>
-          <div matListItemTitle>Year</div>
-          <div matListItemLine>{{ vehicle.year }}</div>
-        </mat-list-item>
+        <div class="info-tile">
+          <mat-icon aria-hidden="true">directions_car</mat-icon>
+          <div>
+            <div class="label">Model</div>
+            <div class="value">{{ vehicle.model }}</div>
+          </div>
+        </div>
 
-        <mat-list-item>
-          <mat-icon matListItemIcon aria-hidden="true">payments</mat-icon>
-          <div matListItemTitle>Price per day</div>
-          <div matListItemLine>{{ vehicle.pricePerDay }} / day</div>
-        </mat-list-item>
+        <div class="info-tile">
+          <mat-icon aria-hidden="true">event</mat-icon>
+          <div>
+            <div class="label">Year</div>
+            <div class="value">{{ vehicle.year }}</div>
+          </div>
+        </div>
 
-        <!-- Add more fields if you have them -->
-        <!--
-        <mat-list-item>
-          <mat-icon matListItemIcon>palette</mat-icon>
-          <div matListItemTitle>Color</div>
-          <div matListItemLine>{{ vehicle.color }}</div>
-        </mat-list-item>
-        -->
-      </mat-list>
+        <div class="info-tile">
+          <mat-icon aria-hidden="true">payments</mat-icon>
+          <div>
+            <div class="label">Price / day</div>
+            <div class="value strong">{{ vehicle.pricePerDay }} / day</div>
+          </div>
+        </div>
+
+      </div>
+
+      <mat-divider class="section-divider"></mat-divider>
+
+      <!-- Reservation -->
+      <mat-card class="reservation-card" appearance="outlined">
+
+        <!-- logged in -> show form -->
+        <ng-container *ngIf="isLoggedIn; else loginPrompt">
+
+          <mat-card-header class="reservation-header">
+            <mat-icon aria-hidden="true" class="reservation-icon">event_available</mat-icon>
+            <div class="header-text">
+              <mat-card-title>Reserve this vehicle</mat-card-title>
+              <mat-card-subtitle>Pick your dates and confirm</mat-card-subtitle>
+            </div>
+          </mat-card-header>
+
+          <mat-card-content>
+            <form [formGroup]="reservationForm" (ngSubmit)="reserve()" class="reservation-form">
+
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>Start date</mat-label>
+                <mat-icon matPrefix aria-hidden="true">calendar_today</mat-icon>
+                <input matInput type="date" formControlName="startDate" />
+                <mat-error *ngIf="reservationForm.get('startDate')?.touched && reservationForm.get('startDate')?.hasError('required')">
+                  Start date is required.
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="form-field">
+                <mat-label>End date</mat-label>
+                <mat-icon matPrefix aria-hidden="true">event</mat-icon>
+                <input matInput type="date" formControlName="endDate" />
+                <mat-error *ngIf="reservationForm.get('endDate')?.touched && reservationForm.get('endDate')?.hasError('required')">
+                  End date is required.
+                </mat-error>
+              </mat-form-field>
+
+              <button mat-flat-button color="primary" type="submit" [disabled]="reservationForm.invalid" class="reserve-btn">
+                <mat-icon aria-hidden="true">check_circle</mat-icon>
+                Reserve
+              </button>
+
+            </form>
+          </mat-card-content>
+
+        </ng-container>
+
+        <!-- NOT logged in -> form invisible (not rendered) -->
+        <ng-template #loginPrompt>
+          <mat-card-content class="login-prompt">
+            <mat-icon aria-hidden="true">lock</mat-icon>
+            <div class="login-text">
+              <div class="title">Login required</div>
+              <div class="subtitle">You must be logged in to make a reservation.</div>
+            </div>
+
+            <span class="spacer"></span>
+
+            <a mat-flat-button color="primary" routerLink="/login">
+              <mat-icon aria-hidden="true">login</mat-icon>
+              Login
+            </a>
+          </mat-card-content>
+        </ng-template>
+
+      </mat-card>
     </ng-container>
 
     <ng-template #notFound>
@@ -71,13 +151,5 @@
     </ng-template>
 
   </mat-card-content>
-
-  <!-- Actions -->
-  <mat-card-actions>
-    <a mat-button color="primary" [routerLink]="['/vehicles']">
-      <mat-icon aria-hidden="true">arrow_back</mat-icon>
-      Back to list
-    </a>
-  </mat-card-actions>
 
 </mat-card>

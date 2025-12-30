@@ -1,20 +1,159 @@
 .page-card {
-  max-width: 800px;
-  margin: 16px auto;
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 8px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-icon {
+  font-size: 30px;
+  width: 30px;
+  height: 30px;
+  opacity: 0.9;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.spacer {
+  flex: 1;
 }
 
 .state-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 0;
+  gap: 12px;
+  padding: 18px 6px;
+}
+
+.state-row.muted {
+  opacity: 0.75;
+}
+
+.state-row.loading {
+  padding: 22px 6px;
 }
 
 .error-card {
-  border-color: rgba(244, 67, 54, 0.35);
-  margin-top: 8px;
+  margin-top: 12px;
+  border-left: 4px solid #d32f2f;
 }
 
-.muted {
-  opacity: 0.8;
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 16px 4px 6px;
+}
+
+@media (max-width: 700px) {
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.info-tile {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.03);
+  align-items: center;
+}
+
+.info-tile mat-icon {
+  opacity: 0.85;
+}
+
+.label {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.value {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.value.strong {
+  font-weight: 700;
+}
+
+.section-divider {
+  margin: 18px 0 10px;
+}
+
+.reservation-card {
+  margin-top: 10px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.reservation-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 0;
+}
+
+.reservation-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+  opacity: 0.9;
+}
+
+.reservation-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 12px;
+  align-items: start;
+  padding-top: 8px;
+}
+
+@media (max-width: 800px) {
+  .reservation-form {
+    grid-template-columns: 1fr;
+  }
+
+  .reserve-btn {
+    width: 100%;
+  }
+}
+
+.form-field {
+  width: 100%;
+}
+
+.reserve-btn {
+  height: 56px;
+  border-radius: 12px;
+  padding: 0 18px;
+}
+
+.login-prompt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px;
+}
+
+.login-prompt mat-icon {
+  opacity: 0.9;
+}
+
+.login-text .title {
+  font-weight: 700;
+}
+
+.login-text .subtitle {
+  font-size: 13px;
+  opacity: 0.75;
 }
