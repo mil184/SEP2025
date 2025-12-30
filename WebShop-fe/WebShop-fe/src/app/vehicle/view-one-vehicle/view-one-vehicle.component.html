@@ -1,0 +1,83 @@
+<mat-card appearance="outlined" class="page-card">
+
+  <!-- Header -->
+  <mat-card-header>
+    <mat-card-title>
+      Vehicle details
+    </mat-card-title>
+    <mat-card-subtitle *ngIf="vehicle">
+      {{ vehicle.brand }} {{ vehicle.model }}
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <!-- Loading -->
+    <div *ngIf="isLoading" class="state-row">
+      <span>Loading vehicle...</span>
+    </div>
+
+    <!-- Error -->
+    <mat-card *ngIf="!isLoading && error" class="error-card" appearance="outlined">
+      <mat-card-content class="state-row">
+        <mat-icon aria-hidden="true">error_outline</mat-icon>
+        <span>{{ error }}</span>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Vehicle -->
+    <ng-container *ngIf="!isLoading && !error && vehicle; else notFound">
+      <mat-list>
+        <mat-list-item>
+          <mat-icon matListItemIcon aria-hidden="true">sell</mat-icon>
+          <div matListItemTitle>Brand</div>
+          <div matListItemLine>{{ vehicle.brand }}</div>
+        </mat-list-item>
+
+        <mat-list-item>
+          <mat-icon matListItemIcon aria-hidden="true">directions_car</mat-icon>
+          <div matListItemTitle>Model</div>
+          <div matListItemLine>{{ vehicle.model }}</div>
+        </mat-list-item>
+
+        <mat-list-item>
+          <mat-icon matListItemIcon aria-hidden="true">year</mat-icon>
+          <div matListItemTitle>Year</div>
+          <div matListItemLine>{{ vehicle.year }}</div>
+        </mat-list-item>
+
+        <mat-list-item>
+          <mat-icon matListItemIcon aria-hidden="true">payments</mat-icon>
+          <div matListItemTitle>Price per day</div>
+          <div matListItemLine>{{ vehicle.pricePerDay }} / day</div>
+        </mat-list-item>
+
+        <!-- Add more fields if you have them -->
+        <!--
+        <mat-list-item>
+          <mat-icon matListItemIcon>palette</mat-icon>
+          <div matListItemTitle>Color</div>
+          <div matListItemLine>{{ vehicle.color }}</div>
+        </mat-list-item>
+        -->
+      </mat-list>
+    </ng-container>
+
+    <ng-template #notFound>
+      <div *ngIf="!isLoading && !error" class="state-row muted">
+        <mat-icon aria-hidden="true">info</mat-icon>
+        <span>Vehicle not found.</span>
+      </div>
+    </ng-template>
+
+  </mat-card-content>
+
+  <!-- Actions -->
+  <mat-card-actions>
+    <a mat-button color="primary" [routerLink]="['/vehicles']">
+      <mat-icon aria-hidden="true">arrow_back</mat-icon>
+      Back to list
+    </a>
+  </mat-card-actions>
+
+</mat-card>

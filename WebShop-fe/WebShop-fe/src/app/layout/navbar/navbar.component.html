@@ -1,0 +1,33 @@
+<mat-toolbar class="navbar" color="primary">
+  <div class="navbar-left">
+    <!-- <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
+    </button> -->
+
+    </div>
+
+    <!-- Menu definition
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>hello</button>
+      <button 
+        mat-menu-item 
+        *ngIf="currentUser && currentUser.role === UserRole.Administrator" 
+        [routerLink]="['/user-approval']">
+        Manage equipment
+      </button>
+    </mat-menu>
+  </div> -->
+
+  <div class="logo" [routerLink]="['/']">BlueRent</div>
+  
+  <!-- <div class="navbar-right">
+    <ng-container *ngIf=!currentUser>
+      <button mat-flat-button [routerLink]="['/login']">Log In</button>
+      <button mat-flat-button [routerLink]="['/register']">Register</button>
+    </ng-container>
+    
+    <ng-container *ngIf=currentUser>
+      <button mat-flat-button (click)="logOut()">Log Out</button>
+    </ng-container>
+  </div> -->
+</mat-toolbar>

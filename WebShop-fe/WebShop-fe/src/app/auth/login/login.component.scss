@@ -1,0 +1,23 @@
+.example-container{
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: center;
+}
+
+.form-container{
+    text-align: center;
+    flex-direction: row;
+    margin: 0 60vw 40vh 60vw;
+}
+
+.form-field{
+    width: 18vw;
+}
+
+button {
+    background-color: rgb(81, 135, 235) !important;
+}

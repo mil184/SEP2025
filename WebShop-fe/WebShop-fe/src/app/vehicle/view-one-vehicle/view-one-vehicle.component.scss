@@ -1,0 +1,20 @@
+.page-card {
+  max-width: 800px;
+  margin: 16px auto;
+}
+
+.state-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+}
+
+.error-card {
+  border-color: rgba(244, 67, 54, 0.35);
+  margin-top: 8px;
+}
+
+.muted {
+  opacity: 0.8;
+}

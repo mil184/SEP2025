@@ -1,0 +1,44 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>Available vehicles</mat-card-title>
+    <mat-card-subtitle *ngIf="vehicles?.length">
+      {{ vehicles.length }} found
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <mat-card *ngIf="error" class="error-card" appearance="outlined">
+      <mat-card-content class="state-row">
+        <mat-icon aria-hidden="true">error_outline</mat-icon>
+        <span>{{ error }}</span>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-list *ngIf="!error && vehicles?.length; else emptyState">
+      <mat-list-item *ngFor="let v of vehicles">
+        <mat-icon matListItemIcon aria-hidden="true">directions_car</mat-icon>
+
+        <!-- clickable title -->
+        <a matListItemTitle [routerLink]="['/vehicles', v.id]" class="title-link">
+          {{ v.brand }} {{ v.model }} {{ v.year }}
+        </a>
+
+        <div matListItemLine>
+          {{ v.pricePerDay }} / day
+        </div>
+
+        <!-- action -->
+        <a matListItemMeta mat-button [routerLink]="['/vehicles', v.id]">
+          Details
+        </a>
+      </mat-list-item>
+    </mat-list>
+
+    <ng-template #emptyState>
+      <div class="state-row muted">
+        <mat-icon aria-hidden="true">info</mat-icon>
+        <span>No vehicles available.</span>
+      </div>
+    </ng-template>
+  </mat-card-content>
+</mat-card>

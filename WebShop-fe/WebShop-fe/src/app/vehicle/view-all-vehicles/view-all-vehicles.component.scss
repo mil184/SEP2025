@@ -1,0 +1,17 @@
+.error-card {
+  border-color: rgba(244, 67, 54, 0.35);
+}
+
+.error-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.empty-state {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.8;
+  padding: 12px 0;
+}
