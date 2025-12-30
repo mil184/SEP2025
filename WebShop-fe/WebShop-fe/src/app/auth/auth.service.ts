@@ -4,6 +4,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { LoginRequest } from '../model/login-request.model';
+import { RegisterRequest } from '../model/register-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +30,16 @@ export class AuthService {
         this.router.navigate(['/']);
       })
     );
+  }
+
+  register(registerRequest: RegisterRequest) {
+    return this.http.post<any>(this.apiUrl + 'register', registerRequest).subscribe({
+      next: () => {
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        console.error('Registration failed:', err);
+      }
+    });
   }
 }

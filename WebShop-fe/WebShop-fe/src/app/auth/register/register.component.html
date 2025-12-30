@@ -1,1 +1,51 @@
-<p>register works!</p>
+<div class="example-container">
+    <div class="form-container">
+        <form [formGroup]="registerForm" (submit)="submit()">
+
+            <mat-form-field class="form-field" appearance="outline">
+                <mat-label>Name</mat-label>
+                <input matInput formControlName="name" required>
+            </mat-form-field>
+
+            <mat-form-field class="form-field" appearance="outline">
+                <mat-label>Surname</mat-label>
+                <input matInput formControlName="surname" required>
+            </mat-form-field>
+
+            <mat-form-field class="form-field" appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" required>
+                    <mat-error *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('required')">
+                        Email is required.
+                    </mat-error>
+                    <mat-error *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('email')">
+                        Please enter a valid email address.
+                    </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="form-field" appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput formControlName="password1" [type]="hide1 ? 'password' : 'text'" />
+                <button mat-icon-button matSuffix (click)="hide1 = !hide1" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide1">
+                    <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+            </mat-form-field>
+
+            <mat-form-field class="form-field" appearance="outline">
+                <mat-label>Repeat password</mat-label>
+                <input matInput formControlName="password2" [type]="hide2 ? 'password' : 'text'" />
+                    <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2">
+                <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+            </mat-form-field>
+
+            <div *ngIf="passwordsMatchError" class="error-message">Passwords do not match!</div>
+            <div *ngIf="passwordLengthError" class="error-message">Password should be at least 8 characters long!</div>
+            <div *ngIf="passwordCharacterError" class="error-message">Password should have at least one special character!</div>
+
+            
+
+            <button mat-flat-button class="submit-button" type="submit">Register</button>
+        </form>
+    </div>
+</div>
