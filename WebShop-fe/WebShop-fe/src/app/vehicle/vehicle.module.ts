@@ -15,12 +15,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ViewReservationsByUserComponent } from './view-reservations-by-user/view-reservations-by-user.component';
 
 
 @NgModule({
   declarations: [
     ViewOneVehicleComponent,
     ViewAllVehiclesComponent,
+    ViewReservationsByUserComponent,
   ],
   imports: [
     CommonModule,

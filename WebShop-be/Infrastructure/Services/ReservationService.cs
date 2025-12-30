@@ -28,6 +28,11 @@ namespace Infrastructure.Services
             return _reservationRepository.GetAll();
         }
 
+        public IEnumerable<Reservation> GetAllByUser(Guid userId)
+        {
+            return GetAll().Where(x => x.UserId == userId).ToList();
+        }
+
         public Reservation? GetById(Guid id)
         {
             var reservation = _reservationRepository.GetById(id);

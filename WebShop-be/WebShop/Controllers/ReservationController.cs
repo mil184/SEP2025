@@ -23,6 +23,13 @@ namespace WebShop.Controllers
             return Ok(_reservationService.GetAll());
         }
 
+        [HttpGet("user/{userId:guid}")]
+        public ActionResult<IEnumerable<Reservation>> GetAllByUser(Guid userId)
+        {
+            var reservations = _reservationService.GetAllByUser(userId);
+            return Ok(reservations);
+        }
+
         [HttpGet("{id}")]
         public ActionResult<Reservation> GetById(string id)
         {

@@ -1,0 +1,59 @@
+<div class="page">
+  <div class="page-card">
+
+    <div class="page-header">
+      <div>
+        <h1>My reservations</h1>
+        <p class="subtitle">Your reservation history in one place.</p>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn" type="button" (click)="ngOnInit()">
+          Refresh
+        </button>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div *ngIf="error" class="state state-error">
+      <span class="state-icon">!</span>
+      <span>{{ error }}</span>
+    </div>
+
+    <!-- Empty -->
+    <div *ngIf="!error && reservations.length === 0" class="state state-empty">
+      <span class="state-icon">🗓️</span>
+      <div>
+        <div class="state-title">No reservations yet</div>
+        <div class="state-text">When you reserve a vehicle, it will show up here.</div>
+      </div>
+    </div>
+
+    <!-- List -->
+    <div *ngIf="!error && reservations.length > 0" class="list">
+      <div class="list-head">
+        <div class="col">Vehicle</div>
+        <div class="col center">Start</div>
+        <div class="col center">End</div>
+      </div>
+
+      <div class="row" *ngFor="let r of reservations">
+        <div class="col vehicle">
+          <div class="vehicle-title">Reservation</div>
+          <div class="vehicle-sub">
+            Vehicle ID: <span class="mono">{{ r.vehicleId }}</span>
+          </div>
+        </div>
+
+        <div class="col center">
+          <div class="date">{{ r.startDate | date:'mediumDate' }}</div>
+        </div>
+
+        <div class="col center">
+          <div class="date">{{ r.endDate | date:'mediumDate' }}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

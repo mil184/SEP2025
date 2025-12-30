@@ -15,5 +15,9 @@ export class ReservationService {
   create(request: Reservation): Observable<any> {
     return this.http.post<any>(this.baseUrl, request);
   }
+
+  getAllByUser(userId: string): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(`${this.baseUrl}/user/${userId}`);
+  }
   
 }

@@ -5,6 +5,7 @@ import { ViewAllVehiclesComponent } from './vehicle/view-all-vehicles/view-all-v
 import { ViewOneVehicleComponent } from './vehicle/view-one-vehicle/view-one-vehicle.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { ViewReservationsByUserComponent } from './vehicle/view-reservations-by-user/view-reservations-by-user.component';
 
 const routes: Routes = [
   { path: "", component: HomeComponent },
@@ -12,6 +13,8 @@ const routes: Routes = [
   { path: 'vehicles/:id', component: ViewOneVehicleComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'reservations', component: ViewReservationsByUserComponent },
+
 ];
 
 @NgModule({
