@@ -43,6 +43,11 @@ export class AuthService {
     });
   }
 
+  logout(): void {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+  }
+
   getUserId1(): string {
     const token = localStorage.getItem('accessToken');
     if (!token) return '';

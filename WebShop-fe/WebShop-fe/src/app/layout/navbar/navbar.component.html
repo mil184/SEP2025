@@ -1,33 +1,38 @@
 <mat-toolbar class="navbar" color="primary">
+
+  <!-- LEFT: menu dropdown -->
   <div class="navbar-left">
-    <!-- <button mat-icon-button [matMenuTriggerFor]="menu">
-      <mat-icon>menu</mat-icon>
-    </button> -->
+    <button mat-button [matMenuTriggerFor]="mainMenu" class="menu-btn">
+      <mat-icon aria-hidden="true">menu</mat-icon>
+      Menu
+    </button>
 
-    </div>
+    <mat-menu #mainMenu="matMenu">
+      <button mat-menu-item routerLink="/vehicles">
+        <mat-icon aria-hidden="true">directions_car</mat-icon>
+        <span>Vehicles</span>
+      </button>
 
-    <!-- Menu definition
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item>hello</button>
-      <button 
-        mat-menu-item 
-        *ngIf="currentUser && currentUser.role === UserRole.Administrator" 
-        [routerLink]="['/user-approval']">
-        Manage equipment
+      <button mat-menu-item routerLink="/reservations" *ngIf="isLoggedIn()">
+        <mat-icon aria-hidden="true">history</mat-icon>
+        <span>Reservation history</span>
       </button>
     </mat-menu>
-  </div> -->
+  </div>
 
-  <div class="logo" [routerLink]="['/']">BlueRent</div>
-  
-  <!-- <div class="navbar-right">
-    <ng-container *ngIf=!currentUser>
-      <button mat-flat-button [routerLink]="['/login']">Log In</button>
-      <button mat-flat-button [routerLink]="['/register']">Register</button>
+  <!-- CENTER: logo -->
+  <div class="logo" routerLink="/">BlueRent</div>
+
+  <!-- RIGHT: auth buttons -->
+  <div class="navbar-right">
+    <ng-container *ngIf="!isLoggedIn(); else loggedInTpl">
+      <button mat-flat-button routerLink="/login">Log In</button>
+      <button mat-flat-button routerLink="/register">Register</button>
     </ng-container>
-    
-    <ng-container *ngIf=currentUser>
-      <button mat-flat-button (click)="logOut()">Log Out</button>
-    </ng-container>
-  </div> -->
+
+    <ng-template #loggedInTpl>
+      <button mat-flat-button (click)="logout()">Log Out</button>
+    </ng-template>
+  </div>
+
 </mat-toolbar>

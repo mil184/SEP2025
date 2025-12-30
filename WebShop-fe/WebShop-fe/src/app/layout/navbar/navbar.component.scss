@@ -14,9 +14,11 @@
 }
 
 .logo {
-    font-family: 'Baloo 2', cursive;
-    font-weight: 1000;
+    font-family: ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, -apple-system,
+                 "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    font-weight: 800;
     font-size: 2rem;
+    letter-spacing: 0.5px;
     color: #f2eee9;
     text-decoration: none;
     display: inline-block;
@@ -26,4 +28,13 @@
 .navbar-right button{
     background-color: rgb(81, 135, 235) !important;
     color: white !important;
+}
+
+.navbar-left button {
+  color: #f2eee9 !important;
+  font-weight: 600;
+}
+
+.navbar-left mat-icon {
+  margin-right: 6px;
 }
