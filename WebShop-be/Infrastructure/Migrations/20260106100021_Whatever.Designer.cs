@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251230082802_Reservation")]
-    partial class Reservation
+    [Migration("20260106100021_Whatever")]
+    partial class Whatever
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,49 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("Domain.Models.PaymentInitializationRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ErrorUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FailedUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MerchantId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("MerchantOrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("MerchantPassword")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("MerchantTimestamp")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("SuccessUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentInitializationRequests");
+                });
 
             modelBuilder.Entity("Domain.Models.Reservation", b =>
                 {

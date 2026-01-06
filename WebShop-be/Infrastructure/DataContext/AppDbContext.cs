@@ -8,6 +8,7 @@ namespace Infrastructure.DataContext
         public DbSet<User> Users { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<PaymentInitializationRequest> PaymentInitializationRequests { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 

@@ -22,6 +22,49 @@ namespace Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Domain.Models.PaymentInitializationRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ErrorUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FailedUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MerchantId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("MerchantOrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("MerchantPassword")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("MerchantTimestamp")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("SuccessUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentInitializationRequests");
+                });
+
             modelBuilder.Entity("Domain.Models.Reservation", b =>
                 {
                     b.Property<Guid>("Id")

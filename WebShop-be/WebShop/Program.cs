@@ -39,6 +39,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<IPaymentInitializationRequestRepository, PaymentInitializationRequestRepository>();
 
 
 
@@ -49,6 +50,7 @@ builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<IPaymentInitializationRequestService, PaymentInitializationRequestService>();
 
 
 // other
