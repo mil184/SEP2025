@@ -1,1 +1,27 @@
-<p>payments works!</p>
+<div class="pay">
+  <div class="logos">
+    <img src="/assets/visa.svg" alt="Visa">
+    <img src="/assets/mastercard.svg" alt="Mastercard">
+    <img src="/assets/amex.svg" alt="AmEx">
+  </div>
+
+  <label>Card number (PAN)
+    <input placeholder="1234 5678 9012 3456" autocomplete="cc-number" inputmode="numeric">
+  </label>
+
+  <div class="row">
+    <label>Expiry (MM/YY)
+      <input placeholder="MM/YY" autocomplete="cc-exp" inputmode="numeric">
+    </label>
+
+    <label>Security code
+      <input placeholder="CVC" autocomplete="cc-csc" inputmode="numeric">
+    </label>
+  </div>
+
+  <label>Cardholder name
+    <input placeholder="JOHN DOE" autocomplete="cc-name">
+  </label>
+
+  <button>Pay</button>
+</div>
