@@ -5,6 +5,7 @@ namespace Domain.Service
 {
     public interface IPaymentService
     {
-        PaymentInitializationRequest Create(PaymentInitializationRequestDto request);
+        PaymentInitializationRequest CreatePaymentInitializationRequest(PaymentInitializationRequestDto request);
+        BankPaymentRequest CreateBankPaymentRequest(BankPaymentRequestDto request);
     }
 }

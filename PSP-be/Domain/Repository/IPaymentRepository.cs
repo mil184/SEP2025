@@ -4,6 +4,7 @@ namespace Domain.Repository
 {
     public interface IPaymentRepository
     {
-        PaymentInitializationRequest Create(PaymentInitializationRequest request);
+        PaymentInitializationRequest CreatePaymentInitializationRequest(PaymentInitializationRequest request);
+        BankPaymentRequest CreateBankPaymentRequest(BankPaymentRequest request);
     }
 }

@@ -12,9 +12,16 @@ namespace Infrastructure.Repository
             _context = context;
         }
 
-        public PaymentInitializationRequest Create(PaymentInitializationRequest request)
+        public PaymentInitializationRequest CreatePaymentInitializationRequest(PaymentInitializationRequest request)
         {
             _context.PaymentInitializationRequests.Add(request);
+            _context.SaveChanges();
+            return request;
+        }
+
+        public BankPaymentRequest CreateBankPaymentRequest(BankPaymentRequest request)
+        {
+            _context.BankPaymentRequests.Add(request);
             _context.SaveChanges();
             return request;
         }

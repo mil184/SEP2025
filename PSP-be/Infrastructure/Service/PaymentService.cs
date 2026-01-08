@@ -13,7 +13,7 @@ namespace Infrastructure.Service
             _repository = repository;
         }
 
-        public PaymentInitializationRequest Create(PaymentInitializationRequestDto dto)
+        public PaymentInitializationRequest CreatePaymentInitializationRequest(PaymentInitializationRequestDto dto)
         {
             PaymentInitializationRequest request = new PaymentInitializationRequest()
             {
@@ -26,7 +26,21 @@ namespace Infrastructure.Service
                 PspOrderId = Guid.NewGuid()
             };
 
-            return _repository.Create(request);
+            return _repository.CreatePaymentInitializationRequest(request);
+        }
+
+        public BankPaymentRequest CreateBankPaymentRequest(BankPaymentRequestDto dto)
+        {
+            BankPaymentRequest request = new BankPaymentRequest()
+            {
+                MerchantId = dto.MerchantId,
+                Amount = dto.Amount,
+                Currency = dto.Currency,
+                Stan = Guid.NewGuid(),
+                PspTimestamp = DateTime.Now
+            };
+
+            return _repository.CreateBankPaymentRequest(request);
         }
     }
 }

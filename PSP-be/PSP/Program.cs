@@ -12,6 +12,18 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
+
+//CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+        policy.WithOrigins("http://localhost:4201")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials()
+    );
+});
+
 builder.Services.AddScoped<IBankPaymentRequestRepository, BankPaymentRequestRepository>();
 builder.Services.AddScoped<IBankPaymentRequestService, BankPaymentRequestService>();
 builder.Services.AddScoped<IMerchantRepository, MerchantRepository>();
@@ -25,6 +37,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseCors("AllowFrontend");
 
 if (app.Environment.IsDevelopment())
 {

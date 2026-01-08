@@ -18,7 +18,7 @@ namespace PSP.Controllers
         }
 
         [HttpPost]
-        public ActionResult VerifyMerchant(PaymentInitializationRequestDto dto)
+        public ActionResult HandlePaymentInitializationRequest(PaymentInitializationRequestDto dto)
         {
             if (dto == null)
                 return BadRequest();
@@ -31,9 +31,21 @@ namespace PSP.Controllers
             }
 
             // save Request1 (Table1) to database + PspOrderId
-            var paymentInitializationRequest = _paymentService.Create(dto);
+            var paymentInitializationRequest = _paymentService.CreatePaymentInitializationRequest(dto);
 
-            // TODO : kreira se link za redirekciju: localhost:psp/psp-order-id
+            var redirectUrl = $"https://localhost:4201/payment/{paymentInitializationRequest.PspOrderId}";
+
+            return Ok(new { redirectUrl = redirectUrl });
+        }
+
+        [HttpPost("bank-request")]
+        public ActionResult HandleBankPaymentRequest(BankPaymentRequestDto dto)
+        {
+            if (dto == null)
+                return BadRequest();
+
+            // save Request2 (Table2) to database
+            var bankPaymentRequest = _paymentService.CreateBankPaymentRequest(dto);
 
             return Ok();
         }
