@@ -1,4 +1,6 @@
 using Infrastructure.DataContext;
+using Infrastructure.Repository;
+using Infrastructure.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,11 @@ builder.Services.AddCors(options =>
               .AllowCredentials()
     );
 });
+
+builder.Services.AddScoped<PaymentService, PaymentService>();
+builder.Services.AddScoped<PaymentRepository, PaymentRepository>();
+
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

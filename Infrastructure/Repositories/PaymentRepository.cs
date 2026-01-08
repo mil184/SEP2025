@@ -1,4 +1,5 @@
-﻿using Infrastructure.DataContext;
+﻿using Domain.Models;
+using Infrastructure.DataContext;
 
 namespace Infrastructure.Repository
 {
@@ -10,6 +11,9 @@ namespace Infrastructure.Repository
             _context = context;
         }
 
-
+        public PaymentCard? GetByPan(string pan)
+        {
+            return _context.PaymentCards.FirstOrDefault(x => x.Pan == pan);
+        }
     }
 }
