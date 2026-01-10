@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260108082700_jidsjiwe")]
-    partial class jidsjiwe
+    [Migration("20260108145444_merchant")]
+    partial class merchant
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,13 +44,30 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("PspTimestamp")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Stan")
+                    b.Property<Guid>("Stan")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BankPaymentRequests");
+                });
+
+            modelBuilder.Entity("Domain.Models.BankPaymentResponse", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("PaymentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("PaymentUrl")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("BankPaymentRequests");
+                    b.ToTable("BankPaymentResponses");
                 });
 
             modelBuilder.Entity("Domain.Models.Merchant", b =>
@@ -59,22 +76,10 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("ErrorUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FailedUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<Guid>("MerchantId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("MerchantPassword")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SuccessUrl")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -83,7 +88,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Merchants");
                 });
 
-            modelBuilder.Entity("Domain.Models.PaymentInitializationRequest", b =>
+            modelBuilder.Entity("Domain.Models.PaymentCard", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -92,29 +97,24 @@ namespace Infrastructure.Migrations
                     b.Property<double>("Amount")
                         .HasColumnType("double precision");
 
-                    b.Property<int>("Currency")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("MerchantId")
+                    b.Property<string>("CardholderName")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("MerchantOrderId")
-                        .HasColumnType("uuid");
+                    b.Property<DateOnly>("ExpirationDate")
+                        .HasColumnType("date");
 
-                    b.Property<string>("MerchantPassword")
+                    b.Property<string>("Pan")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("MerchantTimestamp")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("PspOrderId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("SecurityCode")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentInitializationRequests");
+                    b.ToTable("PaymentCards");
                 });
 #pragma warning restore 612, 618
         }

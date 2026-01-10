@@ -27,14 +27,10 @@ namespace Infrastructure.Services
             {
                 Id = Guid.NewGuid(),
                 MerchantId = _merchant_id,
-                MerchantPassword = _merchant_password,
                 Amount = dto.Amount,
                 Currency = dto.Currency,
                 MerchantOrderId = dto.MerchantOrderId,
-                MerchantTimestamp = DateTime.UtcNow,
-                SuccessUrl = "hello",
-                FailedUrl = "hello",
-                ErrorUrl = "hello"
+                MerchantTimestamp = DateTime.UtcNow
             };
 
             return _repository.Create(request);

@@ -45,7 +45,7 @@ namespace WebShop.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Reservation> Create(ReservationDto reservationDto)
+        public async Task<ActionResult<PaymentInitializationResponseDto>> Create(ReservationDto reservationDto)
         {
             if (reservationDto == null)
             {
@@ -53,9 +53,9 @@ namespace WebShop.Controllers
             }
 
             var reservation = new Reservation() { UserId = reservationDto.UserId, VehicleId = reservationDto.VehicleId, StartDate = reservationDto.StartDate, EndDate = reservationDto.EndDate };
-            var createdReservation = _reservationService.Create(reservation);
+            var paymentInit = await _reservationService.Create(reservation);
 
-            return CreatedAtAction(nameof(Create), createdReservation);
+            return Ok(paymentInit);
         }
 
         [HttpPut("{id}")]

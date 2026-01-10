@@ -18,7 +18,6 @@ namespace Infrastructure.Service
             PaymentInitializationRequest request = new PaymentInitializationRequest()
             {
                 MerchantId = dto.MerchantId,
-                MerchantPassword = dto.MerchantPassword,
                 Amount = dto.Amount,
                 Currency = dto.Currency,
                 MerchantOrderId = dto.MerchantOrderId,
@@ -37,7 +36,7 @@ namespace Infrastructure.Service
                 Amount = dto.Amount,
                 Currency = dto.Currency,
                 Stan = Guid.NewGuid(),
-                PspTimestamp = DateTime.Now
+                PspTimestamp = DateTime.Now.ToUniversalTime()
             };
 
             return _repository.CreateBankPaymentRequest(request);

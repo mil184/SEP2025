@@ -2,7 +2,6 @@
 using Domain.Models;
 using Domain.Repository;
 using Domain.Service;
-using Infrastructure.Helpers;
 
 namespace Infrastructure.Service
 {
@@ -21,7 +20,7 @@ namespace Infrastructure.Service
 
         public bool VerifyMerchant(PaymentInitializationRequestDto dto)
         {
-            var merchantId = GuidHelper.GetGuidFromString(dto.MerchantId);
+            var merchantId = dto.MerchantId;
             var merchant = GetByMerchantId(merchantId);
             return merchant.MerchantPassword == dto.MerchantPassword;
         }

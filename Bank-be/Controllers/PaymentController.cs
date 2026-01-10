@@ -14,6 +14,7 @@ namespace Bank_be.Controllers
             _paymentService = paymentService;
         }
 
+        // tacka 6.
         [HttpPost("pay")]
         public ActionResult Pay(PaymentCardDto dto)
         {
@@ -24,6 +25,27 @@ namespace Bank_be.Controllers
             {
                 return BadRequest();
             }
+
+            return Ok();
+        }
+
+        [HttpPost("bank-payment-request")]
+        public ActionResult HandleBankPaymentRequest(BankPaymentRequestDto dto)
+        {
+            if (dto == null)
+                return BadRequest();
+
+            if (!_paymentService.ValidateBankPaymentRequest(dto))
+            {
+                return NotFound();
+            }
+
+            if (!_paymentService.ValidateMerchant(dto.MerchantId))
+            {
+                return NotFound();
+            }
+
+            var bankPaymentResponse = _paymentService.CreateBankPaymentResponse();
 
             return Ok();
         }

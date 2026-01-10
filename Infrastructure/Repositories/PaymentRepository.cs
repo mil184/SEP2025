@@ -15,5 +15,18 @@ namespace Infrastructure.Repository
         {
             return _context.PaymentCards.FirstOrDefault(x => x.Pan == pan);
         }
+
+        public BankPaymentResponse CreateBankPaymentResponse(BankPaymentResponse bankPaymentResponse)
+        {
+            _context.BankPaymentResponses.Add(bankPaymentResponse);
+            _context.SaveChanges();
+            return bankPaymentResponse;
+        }
+
+        public Merchant? GetByMerchantId(Guid merchantId)
+        {
+            return _context.Merchants.FirstOrDefault(x => x.MerchantId == merchantId);
+        }
+
     }
 }

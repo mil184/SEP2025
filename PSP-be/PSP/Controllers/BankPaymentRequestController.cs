@@ -1,7 +1,5 @@
-﻿using Domain.Models;
-using Domain.Service;
+﻿using Domain.Service;
 using Microsoft.AspNetCore.Mvc;
-using PSP.Dtos;
 
 namespace PSP.Controllers
 {
@@ -16,24 +14,24 @@ namespace PSP.Controllers
             _bankPaymentRequestService = bankPaymentRequestService;
         }
 
-        [HttpPost]
-        public ActionResult<BankPaymentRequest> Create(BankPaymentRequestDto userDto)
-        {
-            if (userDto == null)
-            {
-                return BadRequest();
-            }
+        //[HttpPost]
+        //public ActionResult<BankPaymentRequest> Create(BankPaymentRequestDto userDto)
+        //{
+        //    if (userDto == null)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            var bankPaymentRequest = new BankPaymentRequest()
-            {
-                MerchantId = userDto.MerchantId,
-                Amount = userDto.Amount,
-                Currency = userDto.Currency,
-                Stan = userDto.Stan
-            };
-            var createdBankPaymentRequest = _bankPaymentRequestService.Create(bankPaymentRequest);
+        //    var bankPaymentRequest = new BankPaymentRequest()
+        //    {
+        //        MerchantId = userDto.MerchantId,
+        //        Amount = userDto.Amount,
+        //        Currency = userDto.Currency,
+        //        Stan = new Guid()
+        //    };
+        //    var createdBankPaymentRequest = _bankPaymentRequestService.Create(bankPaymentRequest);
 
-            return CreatedAtAction(nameof(Create), createdBankPaymentRequest);
-        }
+        //    return CreatedAtAction(nameof(Create), createdBankPaymentRequest);
+        //}
     }
 }

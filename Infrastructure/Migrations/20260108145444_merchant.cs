@@ -6,25 +6,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class merchant : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "BankPaymentRequests",
+                name: "Merchants",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    MerchantId = table.Column<string>(type: "text", nullable: false),
-                    Amount = table.Column<double>(type: "double precision", nullable: false),
-                    Currency = table.Column<int>(type: "integer", nullable: false),
-                    Stan = table.Column<string>(type: "text", nullable: false),
-                    PspTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    MerchantId = table.Column<Guid>(type: "uuid", nullable: false),
+                    MerchantPassword = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BankPaymentRequests", x => x.Id);
+                    table.PrimaryKey("PK_Merchants", x => x.Id);
                 });
         }
 
@@ -32,7 +29,7 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BankPaymentRequests");
+                name: "Merchants");
         }
     }
 }

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260107202526_jsakjadl")]
-    partial class jsakjadl
+    [Migration("20260110173658_jidsjiwe1")]
+    partial class jidsjiwe1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,9 +44,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("PspTimestamp")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Stan")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("Stan")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -95,19 +94,17 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Currency")
                         .HasColumnType("integer");
 
-                    b.Property<string>("MerchantId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("MerchantId")
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("MerchantOrderId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("MerchantPassword")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("MerchantTimestamp")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("PspOrderId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 

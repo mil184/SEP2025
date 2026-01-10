@@ -6,11 +6,27 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class jsakjadl : Migration
+    public partial class jidsjiwe1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "BankPaymentRequests",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    MerchantId = table.Column<string>(type: "text", nullable: false),
+                    Amount = table.Column<double>(type: "double precision", nullable: false),
+                    Currency = table.Column<int>(type: "integer", nullable: false),
+                    Stan = table.Column<Guid>(type: "uuid", nullable: false),
+                    PspTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BankPaymentRequests", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Merchants",
                 columns: table => new
@@ -32,12 +48,12 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    MerchantId = table.Column<string>(type: "text", nullable: false),
-                    MerchantPassword = table.Column<string>(type: "text", nullable: false),
+                    MerchantId = table.Column<Guid>(type: "uuid", nullable: false),
                     Amount = table.Column<double>(type: "double precision", nullable: false),
                     Currency = table.Column<int>(type: "integer", nullable: false),
                     MerchantOrderId = table.Column<Guid>(type: "uuid", nullable: false),
-                    MerchantTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    MerchantTimestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    PspOrderId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,6 +64,9 @@ namespace Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "BankPaymentRequests");
+
             migrationBuilder.DropTable(
                 name: "Merchants");
 

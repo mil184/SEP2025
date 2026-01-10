@@ -1,6 +1,7 @@
 using Domain.Mapping;
 using Domain.Repositories;
 using Domain.Services;
+using Infrastructure.Clients;
 using Infrastructure.DataContext;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
@@ -61,6 +62,13 @@ builder.Services.AddScoped<RegisterValidator, RegisterValidator>();
 builder.Services.AddAutoMapper(cfg =>
 {
     cfg.AddProfile(new UserMappingProfile());
+});
+
+// psp client
+builder.Services.AddHttpClient<PspClient, PspClient>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7154/");
+    client.Timeout = TimeSpan.FromSeconds(15);
 });
 
 builder.Services.AddControllers();

@@ -2,6 +2,9 @@
 using Domain.Models;
 using Domain.Repositories;
 using Domain.Services;
+using Infrastructure.Clients;
+using Infrastructure.Helpers;
+using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Services
 {
@@ -10,26 +13,37 @@ namespace Infrastructure.Services
         private readonly IReservationRepository _reservationRepository;
         private readonly IVehicleService _vehicleService;
         private readonly IPaymentInitializationRequestService _paymentInitializationRequestService;
+        private readonly PspClient _pspClient;
 
-        public ReservationService(IReservationRepository reservationRepository, IVehicleService vehicleService, IPaymentInitializationRequestService paymentInitializationRequestService)
+        private readonly string _merchant_id;
+        private readonly string _merchant_password;
+
+        public ReservationService(IReservationRepository reservationRepository, IVehicleService vehicleService, IPaymentInitializationRequestService paymentInitializationRequestService, PspClient pspClient, IConfiguration config)
         {
             _reservationRepository = reservationRepository;
             _vehicleService = vehicleService;
             _paymentInitializationRequestService = paymentInitializationRequestService;
+            _pspClient = pspClient;
+            _merchant_id = config["Payment:MerchantId"]!;
+            _merchant_password = config["Payment:MerchantPassword"]!;
         }
 
-        public Reservation Create(Reservation reservation)
+        public async Task<PaymentInitializationResponseDto> Create(Reservation reservation)
         {
-
-            var paymentInitializationRequest = new PaymentInitializationRequestDto()
+            var createdReservation = _reservationRepository.Create(reservation);
+            var request = new PaymentInitializationRequestDto()
             {
-                MerchantOrderId = reservation.Id,
+                MerchantId = GuidHelper.GetGuidFromString(_merchant_id),
+                MerchantPassword = _merchant_password,
                 Amount = GetPaymentAmount(reservation),
-                Currency = Domain.Enums.Currency.EUR
+                Currency = Domain.Enums.Currency.EUR,
+                MerchantOrderId = createdReservation.Id,
+                MerchantTimestamp = DateTime.UtcNow
             };
-            _paymentInitializationRequestService.Create(paymentInitializationRequest);
+            _paymentInitializationRequestService.Create(request);
+            var response = await _pspClient.InitializeAsync(request);
 
-            return _reservationRepository.Create(reservation);
+            return response;
         }
 
         private double GetPaymentAmount(Reservation reservation)

@@ -1,4 +1,6 @@
 ﻿using Domain.Dtos;
+using Domain.Models;
+using Infrastructure.Helpers;
 using Infrastructure.Repository;
 
 namespace Infrastructure.Service
@@ -65,5 +67,31 @@ namespace Infrastructure.Service
             return Char.GetNumericValue(str[^1]) == checkDigit;
         }
 
+        public bool ValidateBankPaymentRequest(BankPaymentRequestDto dto)
+        {
+            // TODO : IMPLEMENT
+
+            return true;
+        }
+
+        public BankPaymentResponse CreateBankPaymentResponse()
+        {
+            var bankPaymentResponse = new BankPaymentResponse()
+            {
+                PaymentId = Guid.NewGuid(),
+                PaymentUrl = "https://www.instagram.com" // TODO : FIGURE OUT CORRECT URL
+            };
+
+            return _repository.CreateBankPaymentResponse(bankPaymentResponse);
+        }
+
+        public bool ValidateMerchant(string merchantId)
+        {
+            var merchantGuid = GuidHelper.GetGuidFromString(merchantId);
+            var merchant = _repository.GetByMerchantId(merchantGuid);
+            if (merchant == null)
+                return false;
+            return true;
+        }
     }
 }

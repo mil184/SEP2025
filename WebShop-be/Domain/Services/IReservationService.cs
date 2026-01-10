@@ -1,10 +1,11 @@
-﻿using Domain.Models;
+﻿using Domain.Dtos;
+using Domain.Models;
 
 namespace Domain.Services
 {
     public interface IReservationService
     {
-        Reservation Create(Reservation reservation);
+        Task<PaymentInitializationResponseDto> Create(Reservation reservation);
         void Delete(Reservation reservation);
         IEnumerable<Reservation> GetAll();
         IEnumerable<Reservation> GetAllByUser(Guid userId);

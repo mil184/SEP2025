@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260106100021_Whatever")]
-    partial class Whatever
+    [Migration("20260110175128_idkkk1")]
+    partial class idkkk1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,14 +37,6 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Currency")
                         .HasColumnType("integer");
 
-                    b.Property<string>("ErrorUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FailedUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("MerchantId")
                         .IsRequired()
                         .HasColumnType("text");
@@ -58,10 +50,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime>("MerchantTimestamp")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("SuccessUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

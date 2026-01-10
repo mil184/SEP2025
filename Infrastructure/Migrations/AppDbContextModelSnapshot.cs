@@ -67,6 +67,24 @@ namespace Infrastructure.Migrations
                     b.ToTable("BankPaymentResponses");
                 });
 
+            modelBuilder.Entity("Domain.Models.Merchant", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("MerchantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("MerchantPassword")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Merchants");
+                });
+
             modelBuilder.Entity("Domain.Models.PaymentCard", b =>
                 {
                     b.Property<Guid>("Id")

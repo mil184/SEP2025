@@ -15,7 +15,7 @@ namespace Infrastructure.Repository
 
         public Merchant? GetByMerchantId(Guid id)
         {
-            return _context.Merchants.FirstOrDefault(u => u.Id == id);
+            return _context.Merchants.FirstOrDefault(u => u.MerchantId == id);
         }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace PSP.Controllers
 {
     [ApiController]
-    [Route("payments")]
+    [Route("api/payments")]
     public class PaymentController : Controller
     {
         private readonly IMerchantService _merchantService;
@@ -17,8 +17,8 @@ namespace PSP.Controllers
             _paymentService = paymentService;
         }
 
-        [HttpPost]
-        public ActionResult HandlePaymentInitializationRequest(PaymentInitializationRequestDto dto)
+        [HttpPost("initialize")]
+        public ActionResult<PaymentInitializationResponseDto> HandlePaymentInitializationRequest(PaymentInitializationRequestDto dto)
         {
             if (dto == null)
                 return BadRequest();
@@ -34,8 +34,12 @@ namespace PSP.Controllers
             var paymentInitializationRequest = _paymentService.CreatePaymentInitializationRequest(dto);
 
             var redirectUrl = $"https://localhost:4201/payment/{paymentInitializationRequest.PspOrderId}";
-
-            return Ok(new { redirectUrl = redirectUrl });
+            PaymentInitializationResponseDto response = new PaymentInitializationResponseDto()
+            {
+                PspOrderId = paymentInitializationRequest.PspOrderId,
+                RedirectUrl = redirectUrl,
+            };
+            return Ok(response);
         }
 
         [HttpPost("bank-request")]

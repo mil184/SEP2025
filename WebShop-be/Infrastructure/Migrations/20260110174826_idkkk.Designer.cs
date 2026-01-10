@@ -3,6 +3,7 @@ using System;
 using Infrastructure.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260110174826_idkkk")]
+    partial class idkkk
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,6 +37,14 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Currency")
                         .HasColumnType("integer");
 
+                    b.Property<string>("ErrorUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("FailedUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("MerchantId")
                         .IsRequired()
                         .HasColumnType("text");
@@ -41,8 +52,16 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("MerchantOrderId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("MerchantPassword")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("MerchantTimestamp")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("SuccessUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
