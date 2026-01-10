@@ -104,5 +104,30 @@ namespace Infrastructure.Service
                 return false;
             return true;
         }
+
+        public void Pay(PaymentCardDto dto, Guid orderId)
+        {
+            var card = _repository.GetMatchingCard(dto.Pan, dto.SecurityCode, dto.CardholderName, dto.ExpirationDate);
+
+            if (card == null)
+                throw new InvalidOperationException("Payment card does not exist or details do not match.");
+
+            if (card.ExpirationDate < DateOnly.FromDateTime(DateTime.UtcNow))
+                throw new InvalidOperationException("Payment card is expired.");
+
+            if (!ValidateCheckDigit(card.Pan))
+                throw new InvalidOperationException("Invalid PAN check digit.");
+
+            var order = _bankPaymentRequestService.GetBankPaymentRequest(orderId);
+
+            if (order == null)
+                throw new InvalidOperationException("Order ID is invalid.");
+
+            if (order.Amount > card.Amount)
+                throw new InvalidOperationException("Insufficient funds.");
+
+            card.Amount -= order.Amount;
+            _repository.UpdateCard(card);
+        }
     }
 }

@@ -16,5 +16,10 @@ namespace Infrastructure.Services
         {
             return _repository.CreateBankPaymentRequest(toSave);
         }
+
+        public BankPaymentRequest GetBankPaymentRequest(Guid id)
+        {
+            return _repository.GetBankPaymentRequest(id);
+        }
     }
 }

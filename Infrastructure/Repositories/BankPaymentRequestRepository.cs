@@ -17,5 +17,10 @@ namespace Infrastructure.Repositories
             _context.SaveChanges();
             return bankPaymentRequest;
         }
+
+        public BankPaymentRequest GetBankPaymentRequest(Guid id)
+        {
+            return _context.BankPaymentRequests.FirstOrDefault(x => x.Id == id);
+        }
     }
 }

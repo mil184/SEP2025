@@ -15,8 +15,8 @@ namespace Bank_be.Controllers
         }
 
         // tacka 6.
-        [HttpPost("pay")]
-        public ActionResult Pay(PaymentCardDto dto)
+        [HttpPost("pay/{orderId:guid}")]
+        public ActionResult Pay([FromBody] PaymentCardDto dto, [FromRoute] Guid orderId)
         {
             if (dto == null)
                 return BadRequest();
@@ -26,7 +26,19 @@ namespace Bank_be.Controllers
                 return BadRequest();
             }
 
-            return Ok();
+            try
+            {
+                _paymentService.Pay(dto, orderId);
+                return Ok();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(ex.Message);
+            };
         }
 
         [HttpPost("bank-payment-request")]

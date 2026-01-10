@@ -16,6 +16,16 @@ namespace Infrastructure.Repository
             return _context.PaymentCards.FirstOrDefault(x => x.Pan == pan);
         }
 
+        public PaymentCard? GetMatchingCard(string pan, string securityCode, string cardholderName, DateOnly expirationDate)
+        {
+            return _context.PaymentCards.FirstOrDefault(x =>
+                x.Pan == pan &&
+                x.SecurityCode == securityCode &&
+                x.CardholderName == cardholderName &&
+                x.ExpirationDate == expirationDate
+            );
+        }
+
         public BankPaymentResponse CreateBankPaymentResponse(BankPaymentResponse bankPaymentResponse)
         {
             _context.BankPaymentResponses.Add(bankPaymentResponse);
@@ -28,5 +38,16 @@ namespace Infrastructure.Repository
             return _context.Merchants.FirstOrDefault(x => x.MerchantId == merchantId);
         }
 
+        public PaymentCard? UpdateCard(PaymentCard updated)
+        {
+            var card = _context.PaymentCards.FirstOrDefault(x => x.Pan == updated.Pan);
+            if (card == null)
+                return null;
+
+            card.Amount = updated.Amount;
+
+            _context.SaveChanges();
+            return card;
+        }
     }
 }
