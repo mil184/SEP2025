@@ -1,5 +1,6 @@
 using Domain.Repository;
 using Domain.Service;
+using Infrastructure.Clients;
 using Infrastructure.DataContext;
 using Infrastructure.Repository;
 using Infrastructure.Service;
@@ -30,7 +31,15 @@ builder.Services.AddScoped<IMerchantRepository, MerchantRepository>();
 builder.Services.AddScoped<IMerchantService, MerchantService>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IBankMerchantInformationsRepository, BankMerchantInformationsRepository>();
+builder.Services.AddScoped<IBankMerchantInformationsService, IBankMerchantInformationsService>();
 
+// bank client
+builder.Services.AddHttpClient<BankClient, BankClient>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7147/");
+    client.Timeout = TimeSpan.FromSeconds(15);
+});
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

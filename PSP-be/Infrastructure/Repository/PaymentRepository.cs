@@ -1,6 +1,7 @@
 ﻿using Domain.Models;
 using Domain.Repository;
 using Infrastructure.DataContext;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository
 {
@@ -10,6 +11,13 @@ namespace Infrastructure.Repository
         public PaymentRepository(AppDbContext context)
         {
             _context = context;
+        }
+
+        public PaymentInitializationRequest Get(Guid id)
+        {
+            return _context.PaymentInitializationRequests
+                .AsNoTracking()
+                .FirstOrDefault(x => x.PspOrderId == id);
         }
 
         public PaymentInitializationRequest CreatePaymentInitializationRequest(PaymentInitializationRequest request)

@@ -41,5 +41,10 @@ namespace Infrastructure.Service
 
             return _repository.CreateBankPaymentRequest(request);
         }
+
+        public PaymentInitializationRequest Get(Guid id)
+        {
+            return _repository.Get(id);
+        }
     }
 }

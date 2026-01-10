@@ -1,9 +1,9 @@
-﻿using Domain.Models;
+﻿using Domain.Dtos;
 
 namespace Domain.Service
 {
     public interface IBankPaymentRequestService
     {
-        BankPaymentRequest Create(BankPaymentRequest request);
+        Task<BankPaymentResponseDto> Create(Guid orderId);
     }
 }

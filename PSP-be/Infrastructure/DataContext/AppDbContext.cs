@@ -9,6 +9,7 @@ namespace Infrastructure.DataContext
         public DbSet<BankPaymentRequest> BankPaymentRequests { get; set; }
         public DbSet<PaymentInitializationRequest> PaymentInitializationRequests { get; set; }
         public DbSet<Merchant> Merchants { get; set; }
+        public DbSet<BankMerchantInformation> BankMerchantInformations { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
