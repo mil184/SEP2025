@@ -1,6 +1,8 @@
 using Infrastructure.DataContext;
+using Infrastructure.Repositories;
 using Infrastructure.Repository;
 using Infrastructure.Service;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +26,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<PaymentService, PaymentService>();
 builder.Services.AddScoped<PaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<BankPaymentRequestService, BankPaymentRequestService>();
+builder.Services.AddScoped<BankPaymentRequestRepository, BankPaymentRequestRepository>();
 
 
 

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace PSP.Controllers
 {
     [ApiController]
-    [Route("bank-payment-requests")]
+    [Route("api/bank-payment-requests")]
     public class BankPaymentRequestController : Controller
     {
         private readonly IBankPaymentRequestService _bankPaymentRequestService;
@@ -23,7 +23,7 @@ namespace PSP.Controllers
                 return BadRequest();
             }
 
-            var createdBankPaymentRequest = _bankPaymentRequestService.Create(orderId);
+            var createdBankPaymentRequest = await _bankPaymentRequestService.Create(orderId);
 
             return Ok(createdBankPaymentRequest);
         }

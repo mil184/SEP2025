@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260108092515_Inital")]
-    partial class Inital
+    [Migration("20260110220731_merchant-fix")]
+    partial class merchantfix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,9 +37,8 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Currency")
                         .HasColumnType("integer");
 
-                    b.Property<string>("MerchantId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("MerchantId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("PspTimestamp")
                         .HasColumnType("timestamp with time zone");
@@ -68,6 +67,20 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BankPaymentResponses");
+                });
+
+            modelBuilder.Entity("Domain.Models.Merchant", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("MerchantId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Merchants");
                 });
 
             modelBuilder.Entity("Domain.Models.PaymentCard", b =>

@@ -1,16 +1,18 @@
 ﻿using Domain.Dtos;
 using Domain.Models;
-using Infrastructure.Helpers;
 using Infrastructure.Repository;
+using Infrastructure.Services;
 
 namespace Infrastructure.Service
 {
     public class PaymentService
     {
         private readonly PaymentRepository _repository;
-        public PaymentService(PaymentRepository repository)
+        private readonly BankPaymentRequestService _bankPaymentRequestService;
+        public PaymentService(PaymentRepository repository, BankPaymentRequestService bankPaymentRequestService)
         {
             _repository = repository;
+            _bankPaymentRequestService = bankPaymentRequestService;
         }
 
         public bool ValidatePaymentCard(PaymentCardDto dto)
@@ -74,21 +76,30 @@ namespace Infrastructure.Service
             return true;
         }
 
-        public BankPaymentResponse CreateBankPaymentResponse()
+        public BankPaymentResponseDto CreateBankPaymentResponse(BankPaymentRequestDto request)
         {
-            var bankPaymentResponse = new BankPaymentResponse()
+            BankPaymentRequest bankPaymentRequest = new BankPaymentRequest()
             {
-                PaymentId = Guid.NewGuid(),
-                PaymentUrl = "https://www.instagram.com" // TODO : FIGURE OUT CORRECT URL
+                MerchantId = request.MerchantId,
+                Amount = request.Amount,
+                Currency = request.Currency,
+                Stan = request.Stan,
+                PspTimestamp = request.PspTimestamp,
+            };
+            var saved = _bankPaymentRequestService.Create(bankPaymentRequest);
+            Guid paymentId = saved.Id;
+            var response = new BankPaymentResponseDto()
+            {
+                PaymentId = paymentId,
+                PaymentUrl = "http://localhost:4202/" + paymentId.ToString()
             };
 
-            return _repository.CreateBankPaymentResponse(bankPaymentResponse);
+            return response;
         }
 
-        public bool ValidateMerchant(string merchantId)
+        public bool ValidateMerchant(Guid merchantId)
         {
-            var merchantGuid = GuidHelper.GetGuidFromString(merchantId);
-            var merchant = _repository.GetByMerchantId(merchantGuid);
+            var merchant = _repository.GetByMerchantId(merchantId);
             if (merchant == null)
                 return false;
             return true;

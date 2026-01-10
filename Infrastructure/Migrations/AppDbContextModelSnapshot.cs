@@ -34,9 +34,8 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Currency")
                         .HasColumnType("integer");
 
-                    b.Property<string>("MerchantId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("MerchantId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("PspTimestamp")
                         .HasColumnType("timestamp with time zone");
@@ -75,10 +74,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<Guid>("MerchantId")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("MerchantPassword")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

@@ -32,7 +32,7 @@ builder.Services.AddScoped<IMerchantService, MerchantService>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IBankMerchantInformationsRepository, BankMerchantInformationsRepository>();
-builder.Services.AddScoped<IBankMerchantInformationsService, IBankMerchantInformationsService>();
+builder.Services.AddScoped<IBankMerchantInformationsService, BankMerchantInformationsService>();
 
 // bank client
 builder.Services.AddHttpClient<BankClient, BankClient>(client =>

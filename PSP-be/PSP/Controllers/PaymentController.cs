@@ -42,16 +42,16 @@ namespace PSP.Controllers
             return Ok(response);
         }
 
-        [HttpPost("bank-request")]
-        public ActionResult HandleBankPaymentRequest(BankPaymentRequestDto dto)
-        {
-            if (dto == null)
-                return BadRequest();
+        //[HttpPost("bank-request")]
+        //public ActionResult HandleBankPaymentRequest(BankPaymentRequestDto dto)
+        //{
+        //    if (dto == null)
+        //        return BadRequest();
 
-            // save Request2 (Table2) to database
-            var bankPaymentRequest = _paymentService.CreateBankPaymentRequest(dto);
+        //    // save Request2 (Table2) to database
+        //    var bankPaymentRequest = _paymentService.CreateBankPaymentRequest(dto);
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
     }
 }

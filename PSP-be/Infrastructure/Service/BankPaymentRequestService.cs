@@ -31,7 +31,7 @@ namespace Infrastructure.Service
                 MerchantId = bankMerchantId,
                 Amount = payment.Amount,
                 Currency = payment.Currency,
-                Stan = Guid.NewGuid(),
+                Stan = payment.PspOrderId,
                 PspTimestamp = DateTime.UtcNow
             };
             var saved = _bankPaymentRequestRepository.Create(toSave);

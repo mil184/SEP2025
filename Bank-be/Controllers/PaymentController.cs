@@ -30,7 +30,7 @@ namespace Bank_be.Controllers
         }
 
         [HttpPost("bank-payment-request")]
-        public ActionResult HandleBankPaymentRequest(BankPaymentRequestDto dto)
+        public ActionResult<BankPaymentResponseDto> HandleBankPaymentRequest(BankPaymentRequestDto dto)
         {
             if (dto == null)
                 return BadRequest();
@@ -45,9 +45,9 @@ namespace Bank_be.Controllers
                 return NotFound();
             }
 
-            var bankPaymentResponse = _paymentService.CreateBankPaymentResponse();
+            var response = _paymentService.CreateBankPaymentResponse(dto);
 
-            return Ok();
+            return Ok(response);
         }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Inital : Migration
+    public partial class merchantfix : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    MerchantId = table.Column<string>(type: "text", nullable: false),
+                    MerchantId = table.Column<Guid>(type: "uuid", nullable: false),
                     Amount = table.Column<double>(type: "double precision", nullable: false),
                     Currency = table.Column<int>(type: "integer", nullable: false),
                     Stan = table.Column<Guid>(type: "uuid", nullable: false),
@@ -38,6 +38,18 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BankPaymentResponses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Merchants",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    MerchantId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Merchants", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,6 +77,9 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "BankPaymentResponses");
+
+            migrationBuilder.DropTable(
+                name: "Merchants");
 
             migrationBuilder.DropTable(
                 name: "PaymentCards");
