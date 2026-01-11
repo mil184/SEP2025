@@ -11,13 +11,15 @@ namespace Infrastructure.Service
         private readonly IBankPaymentRequestRepository _bankPaymentRequestRepository;
         private readonly IPaymentService _paymentService;
         private readonly IBankMerchantInformationsService _merchantInformationsService;
+        private readonly IMerchantService _merchantService;
         private readonly BankClient _bankClient;
 
-        public BankPaymentRequestService(IBankPaymentRequestRepository bankPaymentRequestRepository, IPaymentService paymentService, IBankMerchantInformationsService merchantInformationsService, BankClient bankClient)
+        public BankPaymentRequestService(IBankPaymentRequestRepository bankPaymentRequestRepository, IPaymentService paymentService, IBankMerchantInformationsService merchantInformationsService, IMerchantService merchantService, BankClient bankClient)
         {
             _bankPaymentRequestRepository = bankPaymentRequestRepository;
             _paymentService = paymentService;
             _merchantInformationsService = merchantInformationsService;
+            _merchantService = merchantService;
             _bankClient = bankClient;
         }
 
@@ -45,6 +47,28 @@ namespace Infrastructure.Service
             };
             var response = await _bankClient.GetRedirectAsync(request);
             return response;
+        }
+
+        public PaymentFinalizationResponseDto Finalize(PaymentFinalizationRequestDto request)
+        {
+            // TODO: save request?
+            Guid stan = request.Stan;
+            var payment = _paymentService.Get(stan);
+            Guid merchantId = payment.MerchantId;
+            var merchant = _merchantService.GetByMerchantId(merchantId);
+
+            if (request.Status == Domain.Enums.Status.Success)
+            {
+                return new PaymentFinalizationResponseDto() { RedirectUrl = merchant.SuccessUrl };
+            }
+            else if (request.Status == Domain.Enums.Status.Fail)
+            {
+                return new PaymentFinalizationResponseDto() { RedirectUrl = merchant.FailedUrl };
+            }
+            else
+            {
+                return new PaymentFinalizationResponseDto() { RedirectUrl = merchant.ErrorUrl };
+            }
         }
     }
 }

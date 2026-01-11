@@ -1,3 +1,4 @@
+using Infrastructure.Clients;
 using Infrastructure.DataContext;
 using Infrastructure.Repositories;
 using Infrastructure.Repository;
@@ -24,10 +25,18 @@ builder.Services.AddCors(options =>
     );
 });
 
+// psp client
+builder.Services.AddHttpClient<PspClient, PspClient>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7154/");
+    client.Timeout = TimeSpan.FromSeconds(15);
+});
+
 builder.Services.AddScoped<PaymentService, PaymentService>();
 builder.Services.AddScoped<PaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<BankPaymentRequestService, BankPaymentRequestService>();
 builder.Services.AddScoped<BankPaymentRequestRepository, BankPaymentRequestRepository>();
+builder.Services.AddScoped<PaymentFinalizationRepository, PaymentFinalizationRepository>();
 
 
 

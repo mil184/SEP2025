@@ -16,7 +16,7 @@ namespace Bank_be.Controllers
 
         // tacka 6.
         [HttpPost("pay/{orderId:guid}")]
-        public ActionResult Pay([FromBody] PaymentCardDto dto, [FromRoute] Guid orderId)
+        public async Task<ActionResult<PaymentFinalizationResponseDto>> Pay([FromBody] PaymentCardDto dto, [FromRoute] Guid orderId)
         {
             if (dto == null)
                 return BadRequest();
@@ -28,8 +28,8 @@ namespace Bank_be.Controllers
 
             try
             {
-                _paymentService.Pay(dto, orderId);
-                return Ok();
+                var request = _paymentService.Pay(dto, orderId);
+                return Ok(await _paymentService.UpdateStatus(request));
             }
             catch (KeyNotFoundException ex)
             {

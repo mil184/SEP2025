@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain.Enums;
+using Domain.Models;
 using Infrastructure.DataContext;
 
 namespace Infrastructure.Repositories
@@ -21,6 +22,18 @@ namespace Infrastructure.Repositories
         public BankPaymentRequest GetBankPaymentRequest(Guid id)
         {
             return _context.BankPaymentRequests.FirstOrDefault(x => x.Id == id);
+        }
+
+        public BankPaymentRequest UpdateStatus(Guid id, Status status)
+        {
+            var request = _context.BankPaymentRequests.FirstOrDefault(x => x.Id == id);
+            if (request == null)
+                return null;
+
+            request.Status = status;
+            _context.SaveChanges();
+
+            return request;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain.Enums;
+using Domain.Models;
 using Infrastructure.Repositories;
 
 namespace Infrastructure.Services
@@ -20,6 +21,15 @@ namespace Infrastructure.Services
         public BankPaymentRequest GetBankPaymentRequest(Guid id)
         {
             return _repository.GetBankPaymentRequest(id);
+        }
+
+        public BankPaymentRequest UpdateStatus(Guid id, Status status)
+        {
+            var updated = _repository.UpdateStatus(id, status);
+            if (updated == null)
+                throw new KeyNotFoundException("Bank payment request not found.");
+
+            return updated;
         }
     }
 }

@@ -27,5 +27,18 @@ namespace PSP.Controllers
 
             return Ok(createdBankPaymentRequest);
         }
+
+        [HttpPost("finalize")]
+        public async Task<ActionResult<PaymentFinalizationResponseDto>> FinalizePayment([FromBody] PaymentFinalizationRequestDto request)
+        {
+            if (request == null)
+            {
+                return BadRequest();
+            }
+
+            var response = _bankPaymentRequestService.Finalize(request);
+
+            return Ok(response);
+        }
     }
 }

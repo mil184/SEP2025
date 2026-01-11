@@ -1,5 +1,7 @@
 ﻿using Domain.Dtos;
 using Domain.Models;
+using Infrastructure.Clients;
+using Infrastructure.Repositories;
 using Infrastructure.Repository;
 using Infrastructure.Services;
 
@@ -8,11 +10,15 @@ namespace Infrastructure.Service
     public class PaymentService
     {
         private readonly PaymentRepository _repository;
+        private readonly PaymentFinalizationRepository _paymentFinalizationRepository;
         private readonly BankPaymentRequestService _bankPaymentRequestService;
-        public PaymentService(PaymentRepository repository, BankPaymentRequestService bankPaymentRequestService)
+        private readonly PspClient _pspClient;
+        public PaymentService(PaymentRepository repository, PaymentFinalizationRepository paymentFinalizationRepository, BankPaymentRequestService bankPaymentRequestService, PspClient pspClient)
         {
             _repository = repository;
+            _paymentFinalizationRepository = paymentFinalizationRepository;
             _bankPaymentRequestService = bankPaymentRequestService;
+            _pspClient = pspClient;
         }
 
         public bool ValidatePaymentCard(PaymentCardDto dto)
@@ -105,29 +111,57 @@ namespace Infrastructure.Service
             return true;
         }
 
-        public void Pay(PaymentCardDto dto, Guid orderId)
+        public PaymentFinalizationRequestDto Pay(PaymentCardDto dto, Guid orderId)
         {
             var card = _repository.GetMatchingCard(dto.Pan, dto.SecurityCode, dto.CardholderName, dto.ExpirationDate);
+            var status = Domain.Enums.Status.Success;
 
             if (card == null)
-                throw new InvalidOperationException("Payment card does not exist or details do not match.");
+                status = Domain.Enums.Status.Error;
 
             if (card.ExpirationDate < DateOnly.FromDateTime(DateTime.UtcNow))
-                throw new InvalidOperationException("Payment card is expired.");
+                status = Domain.Enums.Status.Fail;
 
             if (!ValidateCheckDigit(card.Pan))
-                throw new InvalidOperationException("Invalid PAN check digit.");
+                status = Domain.Enums.Status.Fail;
 
             var order = _bankPaymentRequestService.GetBankPaymentRequest(orderId);
 
             if (order == null)
-                throw new InvalidOperationException("Order ID is invalid.");
+                status = Domain.Enums.Status.Error;
 
             if (order.Amount > card.Amount)
-                throw new InvalidOperationException("Insufficient funds.");
+                status = Domain.Enums.Status.Fail;
 
-            card.Amount -= order.Amount;
+            if (status == Domain.Enums.Status.Success)
+                card.Amount -= order.Amount;
+
             _repository.UpdateCard(card);
+            _bankPaymentRequestService.UpdateStatus(orderId, status);
+
+            PaymentFinalizationRequestDto request = new PaymentFinalizationRequestDto()
+            {
+                AcquirerTimestamp = DateTime.UtcNow,
+                GlobalTransactionId = Guid.NewGuid(),
+                Stan = order.Stan,
+                Status = status
+            };
+
+            return request;
+        }
+
+        public async Task<PaymentFinalizationResponseDto> UpdateStatus(PaymentFinalizationRequestDto request)
+        {
+            PaymentFinalization finalization = new PaymentFinalization()
+            {
+                AcquirerTimestamp = request.AcquirerTimestamp,
+                GlobalTransactionId = request.GlobalTransactionId,
+                Stan = request.Stan,
+                Status = request.Status
+            };
+            _paymentFinalizationRepository.CreatePaymentFinalization(finalization);
+            var response = await _pspClient.FinalizeAsync(request);
+            return response;
         }
     }
 }

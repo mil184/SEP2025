@@ -11,5 +11,6 @@ namespace Domain.Models
         public Currency Currency { get; set; }
         public Guid Stan { get; set; }
         public DateTime PspTimestamp { get; set; }
+        public Status Status { get; set; }
     }
 }
