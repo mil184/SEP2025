@@ -52,7 +52,7 @@ namespace WebShop.Controllers
                 return BadRequest();
             }
 
-            var reservation = new Reservation() { UserId = reservationDto.UserId, VehicleId = reservationDto.VehicleId, StartDate = reservationDto.StartDate, EndDate = reservationDto.EndDate };
+            var reservation = new Reservation() { UserId = reservationDto.UserId, VehicleId = reservationDto.VehicleId, StartDate = reservationDto.StartDate, EndDate = reservationDto.EndDate, Status = Domain.Enums.Status.Created };
             var paymentInit = await _reservationService.Create(reservation);
 
             return Ok(paymentInit);

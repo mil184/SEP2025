@@ -1,5 +1,7 @@
-﻿using Infrastructure.RabbitMq;
+﻿using Domain.Services;
+using Infrastructure.RabbitMq;
 using Infrastructure.RabbitMq.Contracts;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -10,14 +12,17 @@ using System.Text;
 public sealed class PaymentFinalizedConsumer : BackgroundService
 {
     private readonly RabbitMQSetting _settings;
+    private readonly IServiceScopeFactory _scopeFactory;
 
     private IConnection? _connection;
     private IChannel? _channel;
 
     public PaymentFinalizedConsumer(
-        IOptions<RabbitMQSetting> options)
+        IOptions<RabbitMQSetting> options,
+        IServiceScopeFactory scopeFactory)
     {
         _settings = options.Value;
+        _scopeFactory = scopeFactory;
     }
 
     public override async Task StartAsync(CancellationToken cancellationToken)
@@ -64,9 +69,12 @@ public sealed class PaymentFinalizedConsumer : BackgroundService
                 if (evt is null)
                     throw new Exception("Message deserialized to null.");
 
-                // TODO: your business logic here
-                Console.WriteLine(
-                    evt.OrderId);
+                using var scope = _scopeFactory.CreateScope();
+                var reservationService = scope.ServiceProvider.GetRequiredService<IReservationService>();
+
+                var reservation = reservationService.GetById(evt.OrderId);
+                reservation.Status = evt.Status;
+                reservationService.Update(reservation);
 
                 // If processing succeeded -> ACK
                 await _channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false, cancellationToken: stoppingToken);

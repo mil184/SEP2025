@@ -1,4 +1,5 @@
-﻿namespace Domain.Models
+﻿using Domain.Enums;
+namespace Domain.Models
 {
     public class Reservation
     {
@@ -7,6 +8,6 @@
         public Guid VehicleId { get; set; }
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
-
+        public Status Status { get; set; }
     }
 }
