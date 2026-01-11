@@ -9,13 +9,19 @@ import { RouterModule } from '@angular/router';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {MatMenuModule} from '@angular/material/menu';
+import { SuccessComponent } from './success/success.component';
+import { ErrorComponent } from './error/error.component';
+import { FailComponent } from './fail/fail.component';
 
 
 
 @NgModule({
   declarations: [
     HomeComponent,
-    NavbarComponent
+    NavbarComponent,
+    SuccessComponent,
+    ErrorComponent,
+    FailComponent
   ],
   imports: [
     CommonModule,

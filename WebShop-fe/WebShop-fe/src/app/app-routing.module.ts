@@ -6,6 +6,9 @@ import { ViewOneVehicleComponent } from './vehicle/view-one-vehicle/view-one-veh
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { ViewReservationsByUserComponent } from './vehicle/view-reservations-by-user/view-reservations-by-user.component';
+import { SuccessComponent } from './layout/success/success.component';
+import { ErrorComponent } from './layout/error/error.component';
+import { FailComponent } from './layout/fail/fail.component';
 
 const routes: Routes = [
   { path: "", component: HomeComponent },
@@ -14,6 +17,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'reservations', component: ViewReservationsByUserComponent },
+  { path: 'success', component: SuccessComponent },
+  { path: 'error', component: ErrorComponent },
+  { path: 'fail', component: FailComponent },
 
 ];
 

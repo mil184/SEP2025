@@ -36,7 +36,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BankMerchantInformations");
+                    b.ToTable("BankMerchantInformations", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.BankPaymentRequest", b =>
@@ -63,7 +63,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BankPaymentRequests");
+                    b.ToTable("BankPaymentRequests", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Merchant", b =>
@@ -93,7 +93,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Merchants");
+                    b.ToTable("Merchants", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.PaymentInitializationRequest", b =>
@@ -122,7 +122,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentInitializationRequests");
+                    b.ToTable("PaymentInitializationRequests", (string)null);
                 });
 #pragma warning restore 612, 618
         }
