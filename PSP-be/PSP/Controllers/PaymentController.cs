@@ -1,4 +1,5 @@
 ﻿using Domain.Dtos;
+using Domain.Models;
 using Domain.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,6 +41,17 @@ namespace PSP.Controllers
                 RedirectUrl = redirectUrl,
             };
             return Ok(response);
+        }
+
+        [HttpPost("merchant")]
+        public ActionResult<Merchant> RegisterMerchant(MerchantRequest req)
+        {
+            if (req == null)
+                return BadRequest();
+
+            var result = _merchantService.Create(req);
+
+            return Ok(result);
         }
 
         //[HttpPost("bank-request")]

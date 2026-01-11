@@ -17,5 +17,12 @@ namespace Infrastructure.Repository
         {
             return _context.Merchants.FirstOrDefault(u => u.MerchantId == id);
         }
+
+        public Merchant Create(Merchant merchant)
+        {
+            _context.Merchants.Add(merchant);
+            _context.SaveChanges();
+            return merchant;
+        }
     }
 }

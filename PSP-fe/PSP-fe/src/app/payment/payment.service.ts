@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Merchant } from '../model/merchant.model';
 
 export interface BankPaymentResponse {
   paymentUrl: string;
@@ -20,5 +21,9 @@ export class PaymentService {
       `${this.baseUrl}/api/bank-payment-requests/${encodeURIComponent(orderId)}`,
       {}
     );
+  }
+
+  registerMerchant(merchant: Merchant): Observable<Merchant> {
+    return this.http.post<Merchant>(`${this.baseUrl}/api/payments/merchant`, merchant);
   }
 }

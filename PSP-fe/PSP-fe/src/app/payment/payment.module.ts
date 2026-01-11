@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PaymentsComponent } from './payments/payments.component';
-import { SuccessComponent } from './success/success.component';
-import { ErrorComponent } from './error/error.component';
 import { MerchantRegistrationComponent } from './merchant-registration/merchant-registration.component';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     PaymentsComponent,
-    SuccessComponent,
-    ErrorComponent,
+    MerchantRegistrationComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule
+
   ]
 })
 export class PaymentModule { }

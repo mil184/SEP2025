@@ -1,9 +1,7 @@
-﻿namespace Domain.Models
+﻿namespace Domain.Dtos
 {
-    public class Merchant
+    public record MerchantRequest
     {
-        public Guid Id { get; set; }
-        public Guid MerchantId { get; set; }
         public string MerchantName { get; set; }
         public string MerchantPassword { get; set; }
         public string SuccessUrl { get; set; }

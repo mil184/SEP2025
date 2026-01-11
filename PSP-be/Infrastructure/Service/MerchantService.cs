@@ -24,5 +24,20 @@ namespace Infrastructure.Service
             var merchant = GetByMerchantId(merchantId);
             return merchant.MerchantPassword == dto.MerchantPassword;
         }
+
+        public Merchant Create(MerchantRequest req)
+        {
+            Merchant merchant = new Merchant()
+            {
+                MerchantId = new Guid(),
+                MerchantPassword = req.MerchantPassword,
+                MerchantName = req.MerchantName,
+                SuccessUrl = req.SuccessUrl,
+                ErrorUrl = req.ErrorUrl,
+                FailedUrl = req.FailedUrl
+
+            };
+            return _merchantRepository.Create(merchant);
+        }
     }
 }

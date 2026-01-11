@@ -1,0 +1,10 @@
+<form [formGroup]="merchantForm" (ngSubmit)="submit()">
+  <input type="text" formControlName="merchantName" placeholder="Merchant name" />
+  <input type="password" formControlName="merchantPassword" placeholder="Merchant password" />
+
+  <input type="text" formControlName="successUrl" placeholder="Success URL" />
+  <input type="text" formControlName="failedUrl" placeholder="Failed URL" />
+  <input type="text" formControlName="errorUrl" placeholder="Error URL" />
+
+  <button type="submit">Register</button>
+</form>

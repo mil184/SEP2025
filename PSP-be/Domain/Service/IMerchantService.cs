@@ -7,5 +7,6 @@ namespace Domain.Service
     {
         Merchant? GetByMerchantId(Guid id);
         bool VerifyMerchant(PaymentInitializationRequestDto dto);
+        Merchant Create(MerchantRequest req);
     }
 }
