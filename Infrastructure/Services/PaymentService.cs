@@ -163,5 +163,10 @@ namespace Infrastructure.Service
             var response = await _pspClient.FinalizeAsync(request);
             return response;
         }
+
+        public double GetAmount(Guid orderId)
+        {
+            return _bankPaymentRequestService.GetBankPaymentRequest(orderId).Amount;
+        }
     }
 }

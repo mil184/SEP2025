@@ -41,6 +41,12 @@ namespace Bank_be.Controllers
             };
         }
 
+        [HttpGet("amount/{orderId:guid}")]
+        public ActionResult<double> GetAmount([FromRoute] Guid orderId)
+        {
+            return Ok(_paymentService.GetAmount(orderId));
+        }
+
         [HttpPost("bank-payment-request")]
         public ActionResult<BankPaymentResponseDto> HandleBankPaymentRequest(BankPaymentRequestDto dto)
         {
