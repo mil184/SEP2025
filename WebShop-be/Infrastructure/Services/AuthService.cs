@@ -29,12 +29,12 @@ namespace Infrastructure.Services
 
         private string HashPassword(string password)
         {
-            return BCrypt.Net.BCrypt.EnhancedHashPassword(password, 13);
+            return BCrypt.Net.BCrypt.HashPassword(password, 13);
         }
 
         private bool CheckPassword(string password, User user)
         {
-            return BCrypt.Net.BCrypt.EnhancedVerify(password, user.Password);
+            return BCrypt.Net.BCrypt.Verify(password, user.Password);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace PSP.Controllers
             // save Request1 (Table1) to database + PspOrderId
             var paymentInitializationRequest = _paymentService.CreatePaymentInitializationRequest(dto);
 
-            var redirectUrl = $"https://localhost:4201/payment/{paymentInitializationRequest.PspOrderId}";
+            var redirectUrl = $"http://localhost:4201/payment/{paymentInitializationRequest.PspOrderId}";
             PaymentInitializationResponseDto response = new PaymentInitializationResponseDto()
             {
                 PspOrderId = paymentInitializationRequest.PspOrderId,

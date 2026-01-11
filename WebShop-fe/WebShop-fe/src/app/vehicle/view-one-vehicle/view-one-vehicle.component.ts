@@ -28,7 +28,6 @@ export class ViewOneVehicleComponent implements OnInit {
     private vehicleService: VehicleService,
     private authService: AuthService,
     private reservationService: ReservationService
-
   ) {}
 
   ngOnInit(): void {
@@ -89,9 +88,8 @@ export class ViewOneVehicleComponent implements OnInit {
     };
     
     this.reservationService.create(reservation).subscribe({
-      next: (created) => {
-        console.log('Reservation created:', created);
-        this.reservationForm.reset();
+      next: (created: { redirectUrl: string }) => {
+        window.location.href = created.redirectUrl;
       },
       error: (err) => console.error(err),
     });

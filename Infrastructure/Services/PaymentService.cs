@@ -97,7 +97,7 @@ namespace Infrastructure.Service
             var response = new BankPaymentResponseDto()
             {
                 PaymentId = paymentId,
-                PaymentUrl = "http://localhost:4202/" + paymentId.ToString()
+                PaymentUrl = "http://localhost:4202/payment/" + paymentId.ToString()
             };
 
             return response;
