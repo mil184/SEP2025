@@ -3,6 +3,7 @@ using Domain.Repositories;
 using Domain.Services;
 using Infrastructure.Clients;
 using Infrastructure.DataContext;
+using Infrastructure.RabbitMq;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
@@ -30,10 +31,13 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
         policy.WithOrigins("http://localhost:4200")
               .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials()
+    .AllowAnyMethod()
+    .AllowCredentials()
     );
 });
+
+builder.Services.Configure<RabbitMQSetting>(builder.Configuration.GetSection("RabbitMQ"));
+builder.Services.AddHostedService<PaymentFinalizedConsumer>();
 
 // Repositories
 

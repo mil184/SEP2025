@@ -3,6 +3,8 @@ using Domain.Models;
 using Domain.Repository;
 using Domain.Service;
 using Infrastructure.Clients;
+using Infrastructure.RabbitMq;
+using Infrastructure.RabbitMq.Contracts;
 
 namespace Infrastructure.Service
 {
@@ -12,10 +14,12 @@ namespace Infrastructure.Service
         private readonly IPaymentService _paymentService;
         private readonly IBankMerchantInformationsService _merchantInformationsService;
         private readonly IMerchantService _merchantService;
+        private readonly IRabbitMQPublisher<PaymentFinalizedEvent> _publisher;
         private readonly BankClient _bankClient;
 
-        public BankPaymentRequestService(IBankPaymentRequestRepository bankPaymentRequestRepository, IPaymentService paymentService, IBankMerchantInformationsService merchantInformationsService, IMerchantService merchantService, BankClient bankClient)
+        public BankPaymentRequestService(IBankPaymentRequestRepository bankPaymentRequestRepository, IPaymentService paymentService, IBankMerchantInformationsService merchantInformationsService, IMerchantService merchantService, IRabbitMQPublisher<PaymentFinalizedEvent> publisher, BankClient bankClient)
         {
+            _publisher = publisher;
             _bankPaymentRequestRepository = bankPaymentRequestRepository;
             _paymentService = paymentService;
             _merchantInformationsService = merchantInformationsService;
@@ -49,7 +53,7 @@ namespace Infrastructure.Service
             return response;
         }
 
-        public PaymentFinalizationResponseDto Finalize(PaymentFinalizationRequestDto request)
+        public async Task<PaymentFinalizationResponseDto> Finalize(PaymentFinalizationRequestDto request)
         {
             // TODO: save request?
             Guid stan = request.Stan;
@@ -57,18 +61,21 @@ namespace Infrastructure.Service
             Guid merchantId = payment.MerchantId;
             var merchant = _merchantService.GetByMerchantId(merchantId);
 
-            if (request.Status == Domain.Enums.Status.Success)
+            string redirectUrl =
+                request.Status == Domain.Enums.Status.Success ? merchant.SuccessUrl :
+                request.Status == Domain.Enums.Status.Fail ? merchant.FailedUrl :
+                                                               merchant.ErrorUrl;
+
+            // Build the MQ event
+            var evt = new PaymentFinalizedEvent
             {
-                return new PaymentFinalizationResponseDto() { RedirectUrl = merchant.SuccessUrl };
-            }
-            else if (request.Status == Domain.Enums.Status.Fail)
-            {
-                return new PaymentFinalizationResponseDto() { RedirectUrl = merchant.FailedUrl };
-            }
-            else
-            {
-                return new PaymentFinalizationResponseDto() { RedirectUrl = merchant.ErrorUrl };
-            }
+                OrderId = payment.MerchantOrderId,
+                Status = request.Status
+            };
+
+            await _publisher.PublishMessageAsync(evt, queueName: "payment.finalized");
+
+            return new PaymentFinalizationResponseDto { RedirectUrl = redirectUrl };
         }
     }
 }

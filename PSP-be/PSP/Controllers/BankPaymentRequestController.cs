@@ -36,7 +36,7 @@ namespace PSP.Controllers
                 return BadRequest();
             }
 
-            var response = _bankPaymentRequestService.Finalize(request);
+            var response = await _bankPaymentRequestService.Finalize(request);
 
             return Ok(response);
         }
