@@ -14,7 +14,7 @@ namespace Infrastructure.Clients
 
         public async Task<BankPaymentResponseDto> GetRedirectAsync(BankPaymentRequestDto dto, CancellationToken ct = default)
         {
-            // sends request to PSP
+            // sends request to Bank
             using var response = await _http.PostAsJsonAsync("api/payments/bank-payment-request", dto, ct);
             response.EnsureSuccessStatusCode();
 

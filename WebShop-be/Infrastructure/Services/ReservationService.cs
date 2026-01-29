@@ -37,7 +37,7 @@ namespace Infrastructure.Services
                 MerchantPassword = _merchant_password,
                 Amount = GetPaymentAmount(reservation),
                 Currency = Domain.Enums.Currency.EUR,
-                MerchantOrderId = createdReservation.Id,
+                MerchantOrderId = createdReservation.Id, // used to update status later
                 MerchantTimestamp = DateTime.UtcNow
             };
             _paymentInitializationRequestService.Create(request);

@@ -27,7 +27,6 @@ namespace PSP.Controllers
             // checks if MerchantId and MerchantPassword are valid
             if (!_merchantService.VerifyMerchant(dto))
             {
-                // TODO : redirect na error url
                 return BadRequest();
             }
 

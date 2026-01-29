@@ -22,7 +22,17 @@ namespace Infrastructure.Service
         {
             var merchantId = dto.MerchantId;
             var merchant = GetByMerchantId(merchantId);
-            return merchant.MerchantPassword == dto.MerchantPassword;
+            return CheckPassword(dto.MerchantPassword, merchant);
+        }
+
+        private bool CheckPassword(string password, Merchant merchant)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, merchant.MerchantPassword);
+        }
+
+        private string HashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password, 12);
         }
 
         public Merchant Create(MerchantRequest req)
@@ -30,7 +40,7 @@ namespace Infrastructure.Service
             Merchant merchant = new Merchant()
             {
                 MerchantId = new Guid(),
-                MerchantPassword = req.MerchantPassword,
+                MerchantPassword = HashPassword(req.MerchantPassword),
                 MerchantName = req.MerchantName,
                 SuccessUrl = req.SuccessUrl,
                 ErrorUrl = req.ErrorUrl,

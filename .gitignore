@@ -28,6 +28,7 @@ bld/
 ############################
 # .NET Core
 ############################
+appsettings.json
 project.lock.json
 project.fragment.lock.json
 artifacts/
