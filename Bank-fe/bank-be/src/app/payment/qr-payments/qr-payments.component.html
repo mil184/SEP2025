@@ -1,0 +1,78 @@
+<form class="pay" [formGroup]="form" (ngSubmit)="onPayClick()">
+  <div class="logos">
+    <img src="/assets/visa.svg" alt="Visa" />
+    <img src="/assets/mastercard.svg" alt="Mastercard" />
+    <img src="/assets/amex.svg" alt="AmEx" />
+  </div>
+
+  <div class="qr-block">
+    <label>Scan QR code</label>
+
+    <p *ngIf="isLoadingQr">Loading QR...</p>
+
+    <img
+        *ngIf="!isLoadingQr && qrUrl"
+        [src]="qrUrl"
+        alt="Payment QR code"
+        class="qr-image"
+    />
+
+    <p *ngIf="!isLoadingQr && !qrUrl" class="error">
+        QR code not available.
+    </p>
+
+    <button type="button" (click)="scanQrFromImage()" [disabled]="!qrUrl || isLoadingQr">
+      Scan QR
+    </button>
+
+    <div *ngIf="currency || amount || brojRacuna || ownerName" class="qr-data">
+      <p><b>Currency:</b> {{ currency }}</p>
+      <p><b>Amount:</b> {{ amount }}</p>
+      <p><b>Broj racuna:</b> {{ brojRacuna }}</p>
+      <p><b>Owner name:</b> {{ ownerName }}</p>
+    </div>
+  </div>
+
+  <label>Card number (PAN)
+    <input
+      formControlName="pan"
+      placeholder="1234 5678 9012 3456"
+      autocomplete="cc-number"
+      inputmode="numeric"
+    />
+  </label>
+
+  <div class="row">
+    <label>Expiry (MM/YY)
+      <input
+        formControlName="expiry"
+        placeholder="MM/YY"
+        autocomplete="cc-exp"
+        inputmode="numeric"
+      />
+    </label>
+
+    <label>Security code
+      <input
+        formControlName="securityCode"
+        placeholder="CVC"
+        autocomplete="cc-csc"
+        inputmode="numeric"
+      />
+    </label>
+  </div>
+
+  <label>Cardholder name
+    <input
+      formControlName="cardholderName"
+      placeholder="JOHN DOE"
+      autocomplete="cc-name"
+    />
+  </label>
+
+  <button type="submit" [disabled]="isSubmitting || form.invalid">
+    {{ isSubmitting ? 'Processing...' : 'Pay' }}
+  </button>
+
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+</form>

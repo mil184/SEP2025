@@ -27,4 +27,11 @@ export class PaymentService {
       `${this.baseUrl}/api/payments/amount/${encodeURIComponent(orderId)}`
     );
   }
+
+  qr(orderId: string): Observable<Blob> {
+    return this.http.get(
+      `${this.baseUrl}/api/payments/qr/${encodeURIComponent(orderId)}`,
+      { responseType: 'blob' }
+  );
+}
 }
