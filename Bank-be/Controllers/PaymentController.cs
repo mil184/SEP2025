@@ -97,5 +97,22 @@ namespace Bank_be.Controllers
             // returns image/png
             return File(pngBytes, "image/png");
         }
+
+        [HttpPost("qr/validate")]
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<string?>> ValidateQr([FromForm] QrValidateRequest request)
+        {
+            var file = request.File;
+
+            if (file == null || file.Length == 0) return Ok(null);
+            if (!string.Equals(file.ContentType, "image/png", StringComparison.OrdinalIgnoreCase)) return Ok(null);
+
+            await using var stream = file.OpenReadStream();
+
+            var decodedText = await QrPayload.TryDecodeTextAsync(stream);
+            if (decodedText is null) return Ok(null);
+
+            return Ok(QrPayload.IsValidPayload(decodedText) ? decodedText : null);
+        }
     }
 }

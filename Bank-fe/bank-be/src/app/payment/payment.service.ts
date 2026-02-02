@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 export interface PayRequestDto {
   pan: string;
@@ -32,6 +32,19 @@ export class PaymentService {
     return this.http.get(
       `${this.baseUrl}/api/payments/qr/${encodeURIComponent(orderId)}`,
       { responseType: 'blob' }
+    );
+  }
+
+  validateQr(file: File): Observable<string | null> {
+  const form = new FormData();
+  form.append('file', file, file.name);
+
+  return this.http.post(
+    `${this.baseUrl}/api/payments/qr/validate`,
+    form,
+    { responseType: 'text' }
+  ).pipe(
+    map(text => text && text.trim().length > 0 ? text : null)
   );
 }
 }

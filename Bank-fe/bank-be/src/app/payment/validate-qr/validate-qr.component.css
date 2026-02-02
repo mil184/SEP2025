@@ -1,0 +1,6 @@
+.card { max-width: 600px; padding: 16px; border: 1px solid #ddd; border-radius: 8px; }
+button { margin-top: 12px; }
+.error { color: #b00020; }
+.ok { margin-top: 12px; }
+.bad { margin-top: 12px; }
+pre { background: #f6f8fa; padding: 12px; border-radius: 6px; overflow: auto; }

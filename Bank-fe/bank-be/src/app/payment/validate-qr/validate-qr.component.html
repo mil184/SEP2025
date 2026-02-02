@@ -1,0 +1,21 @@
+<div class="card">
+  <h2>Validate QR</h2>
+
+  <input type="file" accept="image/png" (change)="onFileSelected($event)" />
+
+  <button (click)="validate()" [disabled]="loading || !selectedFile">
+    {{ loading ? 'Validating...' : 'Validate' }}
+  </button>
+
+  <p *ngIf="error" class="error">{{ error }}</p>
+
+  <div *ngIf="valid === true" class="ok">
+    <p><strong>Valid QR</strong></p>
+    <p><strong>Contents:</strong></p>
+    <pre>{{ decodedText }}</pre>
+  </div>
+
+  <div *ngIf="valid === false" class="bad">
+    <p><strong>Invalid QR</strong></p>
+  </div>
+</div>
