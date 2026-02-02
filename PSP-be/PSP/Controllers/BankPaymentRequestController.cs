@@ -28,6 +28,19 @@ namespace PSP.Controllers
             return Ok(createdBankPaymentRequest);
         }
 
+        [HttpPost("qr/{orderId:guid}")]
+        public async Task<ActionResult<BankPaymentResponseDto>> CreateQR([FromRoute] Guid orderId)
+        {
+            if (orderId == null)
+            {
+                return BadRequest();
+            }
+
+            var createdBankPaymentRequest = await _bankPaymentRequestService.CreateQR(orderId);
+
+            return Ok(createdBankPaymentRequest);
+        }
+
         [HttpPost("finalize")]
         public async Task<ActionResult<PaymentFinalizationResponseDto>> FinalizePayment([FromBody] PaymentFinalizationRequestDto request)
         {

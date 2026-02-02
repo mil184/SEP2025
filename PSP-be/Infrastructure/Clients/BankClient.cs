@@ -21,5 +21,15 @@ namespace Infrastructure.Clients
             var result = await response.Content.ReadFromJsonAsync<BankPaymentResponseDto>(cancellationToken: ct);
             return result ?? throw new InvalidOperationException("Bank response is empty.");
         }
+
+        public async Task<BankPaymentResponseDto> GetRedirectQRAsync(BankPaymentRequestDto dto, CancellationToken ct = default)
+        {
+            // sends request to Bank for QR
+            using var response = await _http.PostAsJsonAsync("api/payments/bank-payment-request/qr", dto, ct);
+            response.EnsureSuccessStatusCode();
+
+            var result = await response.Content.ReadFromJsonAsync<BankPaymentResponseDto>(cancellationToken: ct);
+            return result ?? throw new InvalidOperationException("Bank response is empty.");
+        }
     }
 }

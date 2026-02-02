@@ -103,6 +103,27 @@ namespace Infrastructure.Service
             return response;
         }
 
+        public BankPaymentResponseDto CreateBankPaymentQRResponse(BankPaymentRequestDto request)
+        {
+            BankPaymentRequest bankPaymentRequest = new BankPaymentRequest()
+            {
+                MerchantId = request.MerchantId,
+                Amount = request.Amount,
+                Currency = request.Currency,
+                Stan = request.Stan,
+                PspTimestamp = request.PspTimestamp,
+            };
+            var saved = _bankPaymentRequestService.Create(bankPaymentRequest);
+            Guid paymentId = saved.Id;
+            var response = new BankPaymentResponseDto()
+            {
+                PaymentId = paymentId,
+                PaymentUrl = "http://localhost:4202/payment/qr/" + paymentId.ToString()
+            };
+
+            return response;
+        }
+
         public bool ValidateMerchant(Guid merchantId)
         {
             var merchant = _repository.GetByMerchantId(merchantId);

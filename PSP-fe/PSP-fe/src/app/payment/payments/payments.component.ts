@@ -48,4 +48,33 @@ export class PaymentsComponent {
         }
       });
   }
+
+  payWithQR(): void {
+    if (this.isPaying) return;
+
+    if (!this.orderId) {
+      this.errorMessage = 'Missing orderId in URL.';
+      return;
+    }
+
+    this.errorMessage = '';
+    this.isPaying = true;
+
+    this.service
+      .createBankPaymentQRRequest(this.orderId)
+      .pipe(finalize(() => (this.isPaying = false)))
+      .subscribe({
+        next: (res) => {
+          if (!res?.paymentUrl) {
+            this.errorMessage = 'Missing paymentUrl in response.';
+            return;
+          }
+          window.location.href = res.paymentUrl;
+        },
+        error: (err) => {
+          console.error(err);
+          this.errorMessage = 'Payment request failed. Please try again.';
+        }
+      });
+  }
 }

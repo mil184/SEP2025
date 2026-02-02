@@ -53,6 +53,32 @@ namespace Infrastructure.Service
             return response;
         }
 
+        public async Task<BankPaymentResponseDto> CreateQR(Guid orderId)
+        {
+            var payment = _paymentService.Get(orderId);
+            Guid merchantId = payment.MerchantId;
+            Guid bankMerchantId = _merchantInformationsService.GetByMerchantId(merchantId).BankMerchantId;
+            var toSave = new BankPaymentRequest()
+            {
+                MerchantId = bankMerchantId,
+                Amount = payment.Amount,
+                Currency = payment.Currency,
+                Stan = payment.PspOrderId,
+                PspTimestamp = DateTime.UtcNow
+            };
+            var saved = _bankPaymentRequestRepository.Create(toSave);
+            var request = new BankPaymentRequestDto()
+            {
+                MerchantId = bankMerchantId,
+                Amount = payment.Amount,
+                Currency = payment.Currency,
+                Stan = toSave.Stan,
+                PspTimestamp = toSave.PspTimestamp
+            };
+            var response = await _bankClient.GetRedirectQRAsync(request);
+            return response;
+        }
+
         public async Task<PaymentFinalizationResponseDto> Finalize(PaymentFinalizationRequestDto request)
         {
             // TODO: save request?

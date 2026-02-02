@@ -23,6 +23,13 @@ export class PaymentService {
     );
   }
 
+  createBankPaymentQRRequest(orderId: string): Observable<BankPaymentResponse> {
+    return this.http.post<BankPaymentResponse>(
+      `${this.baseUrl}/api/bank-payment-requests/qr/${encodeURIComponent(orderId)}`,
+      {}
+    );
+  }
+
   registerMerchant(merchant: Merchant): Observable<Merchant> {
     return this.http.post<Merchant>(`${this.baseUrl}/api/payments/merchant`, merchant);
   }

@@ -67,5 +67,26 @@ namespace Bank_be.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost("bank-payment-request/qr")]
+        public ActionResult<BankPaymentResponseDto> HandleBankPaymentQRRequest(BankPaymentRequestDto dto)
+        {
+            if (dto == null)
+                return BadRequest();
+
+            if (!_paymentService.ValidateBankPaymentRequest(dto))
+            {
+                return NotFound();
+            }
+
+            if (!_paymentService.ValidateMerchant(dto.MerchantId))
+            {
+                return NotFound();
+            }
+
+            var response = _paymentService.CreateBankPaymentQRResponse(dto);
+
+            return Ok(response);
+        }
     }
 }
