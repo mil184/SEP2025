@@ -4,6 +4,8 @@ using Infrastructure.Clients;
 using Infrastructure.Repositories;
 using Infrastructure.Repository;
 using Infrastructure.Services;
+using QRCoder;
+using System.Globalization;
 
 namespace Infrastructure.Service
 {
@@ -188,6 +190,28 @@ namespace Infrastructure.Service
         public double GetAmount(Guid orderId)
         {
             return _bankPaymentRequestService.GetBankPaymentRequest(orderId).Amount;
+        }
+
+        public byte[] GenerateQrPngForOrder(Guid orderId)
+        {
+            var paymentRequest = _bankPaymentRequestService.GetBankPaymentRequest(orderId);
+            if (paymentRequest == null)
+                throw new KeyNotFoundException($"Payment request not found for id: {orderId}");
+
+            var currencyCode = paymentRequest.Currency.ToString();
+
+            var amountRounded = Math.Round(paymentRequest.Amount, 2, MidpointRounding.AwayFromZero);
+            var amountFormatted = amountRounded.ToString("0.00", CultureInfo.InvariantCulture).Replace('.', ',');
+
+            var iField = $"{currencyCode}{amountFormatted}";
+
+            var payload = $"K:PR|V:01|C:1|R:105000000000000029|N:Webshop|I:{iField}|SF:221";
+
+            using var generator = new QRCodeGenerator();
+            using var data = generator.CreateQrCode(payload, QRCodeGenerator.ECCLevel.Q);
+
+            var pngQr = new PngByteQRCode(data);
+            return pngQr.GetGraphic(pixelsPerModule: 10);
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Infrastructure.Services
                 MerchantId = GuidHelper.GetGuidFromString(_merchant_id),
                 MerchantPassword = _merchant_password,
                 Amount = GetPaymentAmount(reservation),
-                Currency = Domain.Enums.Currency.EUR,
+                Currency = Domain.Enums.Currency.RSD,
                 MerchantOrderId = createdReservation.Id, // used to update status later
                 MerchantTimestamp = DateTime.UtcNow
             };

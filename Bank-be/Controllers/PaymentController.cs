@@ -88,5 +88,14 @@ namespace Bank_be.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("qr/{orderId:guid}")]
+        public IActionResult GetQr([FromRoute] Guid orderId)
+        {
+            var pngBytes = _paymentService.GenerateQrPngForOrder(orderId);
+
+            // returns image/png
+            return File(pngBytes, "image/png");
+        }
     }
 }
