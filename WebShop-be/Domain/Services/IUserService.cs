@@ -6,7 +6,6 @@ namespace Domain.Services
     {
         User GetByEmail(string email);
         User Create(User user);
-        void Delete(User user);
         IEnumerable<User> GetAll();
         User? GetById(Guid id);
         void Update(User user);

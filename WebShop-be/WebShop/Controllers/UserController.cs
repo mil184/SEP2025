@@ -44,14 +44,5 @@ namespace WebShop.Controllers
 
             return CreatedAtAction(nameof(Create), createdUser);
         }
-
-        [HttpDelete]
-        public ActionResult Delete(string id)
-        {
-            Guid guid = GuidHelper.GetGuidFromString(id);
-            var user = _userService.GetById(guid)!;
-            _userService.Delete(user);
-            return Ok("Successfully deleted user.");
-        }
     }
 }

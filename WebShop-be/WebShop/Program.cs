@@ -11,6 +11,11 @@ using WebShop.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// logger
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.SetMinimumLevel(LogLevel.Information);
+
 // app db context
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -80,6 +85,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.MapGet("/", (ILogger<Program> logger) =>
+{
+    logger.LogInformation("Hello from {Route} at {Time}", "/", DateTimeOffset.UtcNow);
+    return "OK";
+});
 
 app.UseCors("AllowFrontend");
 
